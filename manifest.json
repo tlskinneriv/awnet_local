@@ -1,0 +1,11 @@
+{
+    "domain": "awnet_local",
+    "name": "Ambient Weather Local",
+    "documentation": "about:blank",
+    "dependencies": [],
+    "codeowners": [],
+    "requirements": [],
+    "iot_class": "local_push",
+    "version": "0.0.1",
+    "config_flow": true
+}
