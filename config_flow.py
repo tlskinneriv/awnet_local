@@ -1,3 +1,4 @@
+from typing import Dict
 from homeassistant import config_entries
 from .const import DOMAIN, CONF_MAC, CONF_NAME
 
@@ -25,22 +26,22 @@ class AWNConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors: Dict[str, str] = {}
         if user_input is not None:
             _LOGGER.info(user_input)
-            self._name = user_input[CONF_NAME]
-            self._mac = format_mac(user_input[CONF_MAC])
-            
-            await self.async_set_unique_id(self._mac)
+            name = user_input[CONF_NAME]
+            mac = format_mac(user_input[CONF_MAC])
+
+            await self.async_set_unique_id(mac)
             self._abort_if_unique_id_configured(
-                updates={CONF_MAC: self._mac}
+                updates={CONF_MAC: mac}
             )
-            
+
             return self.async_create_entry(
-                title=f'{self._name} - {self._mac}',
+                title=f'{name} - {mac}',
                 data={
-                    CONF_NAME: self._name,
-                    CONF_MAC: self._mac
+                    CONF_NAME: name,
+                    CONF_MAC: mac
                 }
             )
-        
+
         return self.async_show_form(
             step_id="user", data_schema=CONFIG_SCHEMA, errors=errors
         )
