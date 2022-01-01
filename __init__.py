@@ -1,7 +1,7 @@
 """The Ambient Weather Local integration"""
 
 import logging
-from config.custom_components.awnet_local.const_types import SUPPORTED_SENSOR_TYPES, SUPPORTED_BINARY_SENSOR_TYPES, TYPE_SOLARRADIATION, TYPE_SOLARRADIATION_LX
+from .const_types import SUPPORTED_SENSOR_TYPES, SUPPORTED_BINARY_SENSOR_TYPES, TYPE_SOLARRADIATION, TYPE_SOLARRADIATION_LX
 
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.config_entries import ConfigEntry
