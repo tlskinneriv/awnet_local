@@ -1,0 +1,14 @@
+{
+  "title": "Ambient Weather Local",
+  "config": {
+    "error": {},
+    "step": {
+      "user": {
+        "data": {
+          "station_mac": "MAC Address",
+          "station_name": "Station Name"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+update:
+  name: Update Weather Information
+  description: Updates the weather information from a local push
+  fields: []
