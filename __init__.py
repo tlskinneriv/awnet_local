@@ -1,10 +1,13 @@
 """The Ambient Weather Local integration"""
 
 import logging
-from .const_types import SUPPORTED_SENSOR_TYPES, SUPPORTED_BINARY_SENSOR_TYPES, TYPE_SOLARRADIATION, TYPE_SOLARRADIATION_LX
 
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import (
+    ATTR_NAME,
+    Platform,
+)
 from homeassistant.helpers.device_registry import format_mac
 from homeassistant.helpers.dispatcher import async_dispatcher_connect, async_dispatcher_send
 from homeassistant.helpers.entity import DeviceInfo, Entity, EntityDescription
@@ -17,9 +20,11 @@ from .const import (
     DOMAIN,
 )
 
-from homeassistant.const import (
-    ATTR_NAME,
-    Platform,
+from .const_types import (
+    SUPPORTED_SENSOR_TYPES,
+    SUPPORTED_BINARY_SENSOR_TYPES,
+    TYPE_SOLARRADIATION,
+    TYPE_SOLARRADIATION_LX
 )
 
 _LOGGER = logging.getLogger(__name__)

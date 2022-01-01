@@ -1,12 +1,16 @@
 from typing import Dict
-from homeassistant import config_entries
-from .const import DOMAIN, CONF_MAC, CONF_NAME
+import logging
+import voluptuous as vol
 
+from homeassistant import config_entries
 from homeassistant.helpers.device_registry import format_mac
 import homeassistant.helpers.config_validation as cv
 
-import voluptuous as vol
-import logging
+from .const import (
+    DOMAIN,
+    CONF_MAC,
+    CONF_NAME
+)
 
 _LOGGER = logging.getLogger(__name__)
 
