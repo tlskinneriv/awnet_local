@@ -6,7 +6,7 @@ You can use this integration to take advantage of the new "Custom Server" featur
 
 ## Installation
 
-Place the `custom_components` folder in your configuration directory (or add its contents to an existing `custom_components` folder). Alternatively install via [HACS](https://hacs.xyz/).
+Place the `custom_components` folder in your configuration directory (or add its contents to an existing `custom_components` folder). Alternatively install via [HACS](https://hacs.xyz/) using a custom repository.
 
 ## Configuration
 
