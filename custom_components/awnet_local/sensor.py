@@ -69,6 +69,6 @@ class AmbientWeatherSensor(AmbientWeatherEntity, SensorEntity):
         ]
 
         if self.entity_description.key == TYPE_LASTRAIN:
-            self._attr_native_value = datetime.strptime(raw, "%Y-%m-%dT%H:%M:%S.%f%z")
+            self._attr_native_value = datetime.strptime(raw, "%Y-%m-%dT%H:%M:%S.%f%z") if raw is not None else raw
         else:
             self._attr_native_value = raw
