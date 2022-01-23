@@ -125,6 +125,7 @@ class AmbientWeatherEntity(Entity):
         self._attr_name = f"{station_name}_{description.name}"
         self._attr_unique_id = f"{mac_address}_{description.key}"
         self._mac_address = mac_address
+        self._attr_available = False
         self.entity_description = description
 
     async def async_added_to_hass(self) -> None:

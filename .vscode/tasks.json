@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Run Home Assistant Core",
+        "type": "shell",
+        "command": "cd /srv/homeassistant; source bin/activate; hass -c ./config",
+        "group": "test",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": []
+      }
+    ]
+  }
+  
