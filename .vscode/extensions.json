@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "rlnt.keep-a-changelog",
+        "esbenp.prettier-vscode"
+    ]
+}
