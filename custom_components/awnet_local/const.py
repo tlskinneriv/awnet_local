@@ -7,4 +7,5 @@ CONF_NAME = "station_name"
 
 # Attributes
 ATTR_PASSKEY = "PASSKEY"
+ATTR_MAC = "MAC"
 ATTR_LAST_DATA = "last_data"
