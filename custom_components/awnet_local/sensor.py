@@ -64,11 +64,9 @@ class AmbientWeatherSensor(AmbientWeatherEntity, SensorEntity):
     @callback
     def update_from_latest_data(self) -> None:
         """Fetch new state data for the sensor."""
-        raw = self._ambient.stations[self._mac_address][ATTR_LAST_DATA][
-            self.entity_description.key
-        ]
-
-        if self.entity_description.key == TYPE_LASTRAIN:
-            self._attr_native_value = datetime.strptime(raw, "%Y-%m-%dT%H:%M:%S.%f%z") if raw is not None else raw
-        else:
-            self._attr_native_value = raw
+        raw = self._ambient.stations[self._mac_address][ATTR_LAST_DATA].get(self.entity_description.key)
+        if raw is not None:
+            if self.entity_description.key == TYPE_LASTRAIN:
+                self._attr_native_value = datetime.strptime(raw, "%Y-%m-%dT%H:%M:%S.%f%z")
+            else:
+                self._attr_native_value = raw
