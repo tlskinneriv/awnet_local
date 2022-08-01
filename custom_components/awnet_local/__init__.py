@@ -51,17 +51,29 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     async def async_handle_update(call):
         """Handle the service call"""
         _LOGGER.debug("Called async_handle_update with %s", call)
-        mac = format_mac(call.data.get("PASSKEY", None))
-        if mac is None:
-            _LOGGER.error(
-                "Message is malformed (missing PASSKEY); not updating any entities"
-            )
+        mac = None
+        data = call.data
+        if ATTR_PASSKEY in data:
+            mac = format_mac(data[ATTR_PASSKEY])
+        elif ATTR_MAC in data:
+            mac = format_mac(data[ATTR_MAC])
+        if mac:
+            if not re.search(MAC_REGEX, mac):
+                _LOGGER.error(
+                    "MAC address not in correct format. Parsed MAC: %s. Expected formats: 000000000000, 00:00:00:00:00:00, 00-00-00-00-00-00 or 0000.0000.0000",
+                    mac,
+                )
+                return
+        else:
+            _LOGGER.error("MAC address not found in data. Raw data: %s", data)
+            return
         if mac not in hass.data[DOMAIN][entry.entry_id].stations:
             _LOGGER.warning("Data received for %s that is not our MAC", mac)
+            return
         _LOGGER.debug(
             "Last data: %s", hass.data[DOMAIN][entry.entry_id].stations.get(mac, None)
         )
-        hass.data[DOMAIN][entry.entry_id].on_data(call.data)
+        hass.data[DOMAIN][entry.entry_id].on_data(mac, call.data)
 
     hass.services.async_register(DOMAIN, "update", async_handle_update)
 
@@ -97,23 +109,8 @@ class AmbientStation:
                 self._hass.config_entries.async_setup_platforms(self._entry, PLATFORMS)
                 self._entry_setup_complete = True
 
-    def on_data(self, data: dict) -> None:
+    def on_data(self, mac: str, data: dict) -> None:
         _LOGGER.info("Processing data")
-        mac = None
-        if ATTR_PASSKEY in data:
-            mac = format_mac(data[ATTR_PASSKEY])
-        elif ATTR_MAC in data:
-            mac = format_mac(data[ATTR_MAC])
-        if mac:
-            if not re.search(MAC_REGEX, mac):
-                _LOGGER.error(
-                    "MAC address not in correct format. Parsed MAC: %s. Expected formats: 000000000000, 00:00:00:00:00:00, 00-00-00-00-00-00 or 0000.0000.0000",
-                    mac,
-                )
-                return
-        else:
-            _LOGGER.error("MAC address not found in data. Raw data: %s", data)
-            return
         _LOGGER.info("MAC address: %s", mac)
         _LOGGER.debug("New data received: %s", data)
         extracted_data = {
