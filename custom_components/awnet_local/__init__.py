@@ -36,8 +36,7 @@ _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
 
-MAC_REGEX = r"^(?:[a-f0-9]:){5}[a-f0-9]$"
-
+MAC_REGEX = r"^(?:[a-f0-9]{2}:){5}[a-f0-9]{2}$"
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
