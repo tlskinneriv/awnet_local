@@ -63,13 +63,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     "MAC address not in correct format. Parsed MAC: %s. Expected formats: 000000000000, 00:00:00:00:00:00, 00-00-00-00-00-00 or 0000.0000.0000",
                     mac,
                 )
-                return True
+                return
         else:
             _LOGGER.error("MAC address not found in data. Raw data: %s", data)
-            return True
+            return
         if mac not in hass.data[DOMAIN][entry.entry_id].stations:
             _LOGGER.warning("Data received for %s that is not our MAC", mac)
-            return True
+            return
         _LOGGER.debug(
             "Last data: %s", hass.data[DOMAIN][entry.entry_id].stations.get(mac, None)
         )
