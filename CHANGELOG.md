@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning].
 
 ## [0.2.1] - 2022-07-31
 
+### Added
+
+- Support for alternate MAC dictionary key for the MAC address to support WS-5000
+
 ### Fixed
 
-- Add support for alternate PASSKEY key ("MAC")
+- Check for properly formatted MAC, throw useful error messages if not
+- Errors that were showing for entities that are enabled but don't have data in a previous data update
+- Set VS code formatter and fix some formatting
 
 ## [0.2.0] - 2022-01-23
 
