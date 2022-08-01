@@ -9,9 +9,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityDescription
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.const import (
-    ATTR_NAME
-)
+from homeassistant.const import ATTR_NAME
 
 from . import AmbientStation, AmbientWeatherEntity
 from .const import (
@@ -25,6 +23,7 @@ from .const_types import (
 )
 
 _LOGGER = logging.getLogger(__name__)
+
 
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
@@ -64,9 +63,13 @@ class AmbientWeatherSensor(AmbientWeatherEntity, SensorEntity):
     @callback
     def update_from_latest_data(self) -> None:
         """Fetch new state data for the sensor."""
-        raw = self._ambient.stations[self._mac_address][ATTR_LAST_DATA].get(self.entity_description.key)
+        raw = self._ambient.stations[self._mac_address][ATTR_LAST_DATA].get(
+            self.entity_description.key
+        )
         if raw is not None:
             if self.entity_description.key == TYPE_LASTRAIN:
-                self._attr_native_value = datetime.strptime(raw, "%Y-%m-%dT%H:%M:%S.%f%z")
+                self._attr_native_value = datetime.strptime(
+                    raw, "%Y-%m-%dT%H:%M:%S.%f%z"
+                )
             else:
                 self._attr_native_value = raw
