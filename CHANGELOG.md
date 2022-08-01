@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.2.1] - 2022-07-31
+
+### Fixed
+
+- Add support for alternate PASSKEY key ("MAC")
+
 ## [0.2.0] - 2022-01-23
 
 ### Added
