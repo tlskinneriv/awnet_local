@@ -38,6 +38,7 @@ PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
 
 MAC_REGEX = r"^(?:[a-f0-9]{2}:){5}[a-f0-9]{2}$"
 
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     if not entry.unique_id:
@@ -62,13 +63,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     "MAC address not in correct format. Parsed MAC: %s. Expected formats: 000000000000, 00:00:00:00:00:00, 00-00-00-00-00-00 or 0000.0000.0000",
                     mac,
                 )
-                return
+                return True
         else:
             _LOGGER.error("MAC address not found in data. Raw data: %s", data)
-            return
+            return True
         if mac not in hass.data[DOMAIN][entry.entry_id].stations:
             _LOGGER.warning("Data received for %s that is not our MAC", mac)
-            return
+            return True
         _LOGGER.debug(
             "Last data: %s", hass.data[DOMAIN][entry.entry_id].stations.get(mac, None)
         )
@@ -157,11 +158,13 @@ class AmbientWeatherEntity(Entity):
         def update() -> None:
             """Update the state."""
             last_data = self._ambient.stations[self._mac_address][ATTR_LAST_DATA]
-            
+
             if self.entity_description.key == TYPE_SOLARRADIATION_LX:
                 self._attr_available = last_data.get(TYPE_SOLARRADIATION) is not None
             else:
-                self._attr_available = last_data.get(self.entity_description.key) is not None
+                self._attr_available = (
+                    last_data.get(self.entity_description.key) is not None
+                )
 
             self.update_from_latest_data()
             self.async_write_ha_state()
