@@ -1,6 +1,7 @@
 """The Ambient Weather Local integration"""
 
 import logging
+import re
 
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.config_entries import ConfigEntry
@@ -9,12 +10,16 @@ from homeassistant.const import (
     Platform,
 )
 from homeassistant.helpers.device_registry import format_mac
-from homeassistant.helpers.dispatcher import async_dispatcher_connect, async_dispatcher_send
+from homeassistant.helpers.dispatcher import (
+    async_dispatcher_connect,
+    async_dispatcher_send,
+)
 from homeassistant.helpers.entity import DeviceInfo, Entity, EntityDescription
 
 from .const import (
     ATTR_LAST_DATA,
     ATTR_PASSKEY,
+    ATTR_MAC,
     CONF_MAC,
     CONF_NAME,
     DOMAIN,
@@ -24,52 +29,67 @@ from .const_types import (
     SUPPORTED_SENSOR_TYPES,
     SUPPORTED_BINARY_SENSOR_TYPES,
     TYPE_SOLARRADIATION,
-    TYPE_SOLARRADIATION_LX
+    TYPE_SOLARRADIATION_LX,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
 
+MAC_REGEX = r"^(?:[a-f0-9]{2}:){5}[a-f0-9]{2}$"
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     if not entry.unique_id:
-        hass.config_entries.async_update_entry(
-            entry, unique_id=entry.data[CONF_MAC]
-        )
+        hass.config_entries.async_update_entry(entry, unique_id=entry.data[CONF_MAC])
 
-    ambient = AmbientStation(
-        hass,
-        entry
-    )
+    ambient = AmbientStation(hass, entry)
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = ambient
 
     async def async_handle_update(call):
         """Handle the service call"""
-        _LOGGER.debug('Called async_handle_update with %s', call)
-        mac = format_mac(call.data.get('PASSKEY', None))
-        if mac is None:
-            _LOGGER.error('Message is malformed (missing PASSKEY); not updating any entities')
+        _LOGGER.debug("Called async_handle_update with %s", call)
+        mac = None
+        data = call.data
+        if ATTR_PASSKEY in data:
+            mac = format_mac(data[ATTR_PASSKEY])
+        elif ATTR_MAC in data:
+            mac = format_mac(data[ATTR_MAC])
+        if mac:
+            if not re.search(MAC_REGEX, mac):
+                _LOGGER.error(
+                    "MAC address not in correct format. Parsed MAC: %s. Expected formats: 000000000000, 00:00:00:00:00:00, 00-00-00-00-00-00 or 0000.0000.0000",
+                    mac,
+                )
+                return
+        else:
+            _LOGGER.error("MAC address not found in data. Raw data: %s", data)
+            return
         if mac not in hass.data[DOMAIN][entry.entry_id].stations:
-            _LOGGER.warning('Data received for %s that is not our MAC', mac)
-        _LOGGER.debug('Last data: %s', hass.data[DOMAIN][entry.entry_id].stations.get(mac, None))
-        hass.data[DOMAIN][entry.entry_id].on_data(call.data)
+            _LOGGER.warning("Data received for %s that is not our MAC", mac)
+            return
+        _LOGGER.debug(
+            "Last data: %s", hass.data[DOMAIN][entry.entry_id].stations.get(mac, None)
+        )
+        hass.data[DOMAIN][entry.entry_id].on_data(mac, call.data)
 
     hass.services.async_register(DOMAIN, "update", async_handle_update)
 
     return True
+
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload an Ambient PWS config entry."""
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     return unload_ok
 
+
 class AmbientStation:
     """Define a class to handle the Ambient local updates."""
 
-    def __init__(
-        self, hass: HomeAssistant, entry: ConfigEntry) -> None:
+    def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Initialize."""
         self._entry = entry
         self._entry_setup_complete = False
@@ -83,18 +103,21 @@ class AmbientStation:
             self.stations.setdefault(mac, {})
             self.stations[mac][ATTR_NAME] = name
             self.stations[mac].setdefault(ATTR_LAST_DATA, {})
-            for attr_type in (SUPPORTED_SENSOR_TYPES + SUPPORTED_BINARY_SENSOR_TYPES):
+            for attr_type in SUPPORTED_SENSOR_TYPES + SUPPORTED_BINARY_SENSOR_TYPES:
                 self.stations[mac][ATTR_LAST_DATA][attr_type] = None
             if not self._entry_setup_complete:
                 self._hass.config_entries.async_setup_platforms(self._entry, PLATFORMS)
                 self._entry_setup_complete = True
 
-    def on_data(self, data: dict) -> None:
-        _LOGGER.info('Processing data')
-        mac = format_mac(data[ATTR_PASSKEY])
+    def on_data(self, mac: str, data: dict) -> None:
+        _LOGGER.info("Processing data")
         _LOGGER.info("MAC address: %s", mac)
         _LOGGER.debug("New data received: %s", data)
-        extracted_data = {key: value for key, value in data.items() if key in (SUPPORTED_SENSOR_TYPES + SUPPORTED_BINARY_SENSOR_TYPES)}
+        extracted_data = {
+            key: value
+            for key, value in data.items()
+            if key in (SUPPORTED_SENSOR_TYPES + SUPPORTED_BINARY_SENSOR_TYPES)
+        }
         if extracted_data == self.stations[mac][ATTR_LAST_DATA]:
             return
         self.stations[mac][ATTR_LAST_DATA] = extracted_data
@@ -134,19 +157,13 @@ class AmbientWeatherEntity(Entity):
         @callback
         def update() -> None:
             """Update the state."""
+            last_data = self._ambient.stations[self._mac_address][ATTR_LAST_DATA]
+
             if self.entity_description.key == TYPE_SOLARRADIATION_LX:
-                self._attr_available = (
-                    self._ambient.stations[self._mac_address][ATTR_LAST_DATA][
-                        TYPE_SOLARRADIATION
-                    ]
-                    is not None
-                )
+                self._attr_available = last_data.get(TYPE_SOLARRADIATION) is not None
             else:
                 self._attr_available = (
-                    self._ambient.stations[self._mac_address][ATTR_LAST_DATA][
-                        self.entity_description.key
-                    ]
-                    is not None
+                    last_data.get(self.entity_description.key) is not None
                 )
 
             self.update_from_latest_data()

@@ -12,6 +12,7 @@ from .const import ATTR_LAST_DATA, DOMAIN
 from .const_types import BINARY_SENSOR_DESCRIPTIONS
 from .helpers import AmbientBinarySensorDescription
 
+
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
@@ -38,9 +39,8 @@ class AmbientWeatherBinarySensor(AmbientWeatherEntity, BinarySensorEntity):
     @callback
     def update_from_latest_data(self) -> None:
         """Fetch new state data for the entity."""
-        self._attr_is_on = (
-            self._ambient.stations[self._mac_address][ATTR_LAST_DATA][
-                self.entity_description.key
-            ]
-            == self.entity_description.on_state
+        raw = self._ambient.stations[self._mac_address][ATTR_LAST_DATA].get(
+            self.entity_description.key
         )
+        if raw is not None:
+            self._attr_is_on = raw == self.entity_description.on_state
