@@ -198,7 +198,7 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_WINDGUSTMPH,
     TYPE_WINDSPDMPH_AVG10M,
     TYPE_WINDSPDMPH_AVG2M,
-    TYPE_YEARLYRAININ
+    TYPE_YEARLYRAININ,
 ]
 
 SUPPORTED_BINARY_SENSOR_TYPES = [
@@ -225,8 +225,17 @@ SUPPORTED_BINARY_SENSOR_TYPES = [
     TYPE_RELAY6,
     TYPE_RELAY7,
     TYPE_RELAY8,
-    TYPE_RELAY9
+    TYPE_RELAY9,
 ]
+
+# Each sensor listed here is calculated server-side and depends on the list of
+# sensors it is a key for
+CALCULATED_SENSOR_TYPES = {
+    TYPE_LASTRAIN: [TYPE_HOURLYRAININ],
+    TYPE_FEELSLIKE: [TYPE_TEMPF, TYPE_WINDSPEEDMPH, TYPE_HUMIDITY],
+    TYPE_DEWPOINT: [TYPE_TEMPF, TYPE_HUMIDITY],
+    TYPE_SOLARRADIATION_LX: [TYPE_SOLARRADIATION],
+}
 
 SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
@@ -549,7 +558,7 @@ SENSOR_DESCRIPTIONS = (
     ),
     SensorEntityDescription(
         key=TYPE_SOLARRADIATION_LX,
-        name="Solar Rad",
+        name="Solar Rad Lx",
         native_unit_of_measurement=LIGHT_LUX,
         device_class=SensorDeviceClass.ILLUMINANCE,
         state_class=SensorStateClass.MEASUREMENT,
