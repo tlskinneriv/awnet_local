@@ -28,8 +28,7 @@ from .const import (
 from .const_types import (
     SUPPORTED_SENSOR_TYPES,
     SUPPORTED_BINARY_SENSOR_TYPES,
-    TYPE_SOLARRADIATION,
-    TYPE_SOLARRADIATION_LX,
+    CALCULATED_SENSOR_TYPES,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -42,7 +41,8 @@ MAC_REGEX = r"^(?:[a-f0-9]{2}:){5}[a-f0-9]{2}$"
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     if not entry.unique_id:
-        hass.config_entries.async_update_entry(entry, unique_id=entry.data[CONF_MAC])
+        hass.config_entries.async_update_entry(
+            entry, unique_id=entry.data[CONF_MAC])
 
     ambient = AmbientStation(hass, entry)
 
@@ -71,7 +71,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             _LOGGER.warning("Data received for %s that is not our MAC", mac)
             return
         _LOGGER.debug(
-            "Last data: %s", hass.data[DOMAIN][entry.entry_id].stations.get(mac, None)
+            "Last data: %s", hass.data[DOMAIN][entry.entry_id].stations.get(
+                mac, None)
         )
         hass.data[DOMAIN][entry.entry_id].on_data(mac, call.data)
 
@@ -106,7 +107,8 @@ class AmbientStation:
             for attr_type in SUPPORTED_SENSOR_TYPES + SUPPORTED_BINARY_SENSOR_TYPES:
                 self.stations[mac][ATTR_LAST_DATA][attr_type] = None
             if not self._entry_setup_complete:
-                self._hass.config_entries.async_setup_platforms(self._entry, PLATFORMS)
+                self._hass.config_entries.async_setup_platforms(
+                    self._entry, PLATFORMS)
                 self._entry_setup_complete = True
 
     def on_data(self, mac: str, data: dict) -> None:
@@ -159,8 +161,13 @@ class AmbientWeatherEntity(Entity):
             """Update the state."""
             last_data = self._ambient.stations[self._mac_address][ATTR_LAST_DATA]
 
-            if self.entity_description.key == TYPE_SOLARRADIATION_LX:
-                self._attr_available = last_data.get(TYPE_SOLARRADIATION) is not None
+            if self.entity_description.key in CALCULATED_SENSOR_TYPES:
+                # if we are a calculated sensor type, report available only if all our dependencies
+                # are available
+                self._attr_available = all(
+                    last_data.get(x) is not None
+                    for x in CALCULATED_SENSOR_TYPES[self.entity_description.key]
+                )
             else:
                 self._attr_available = (
                     last_data.get(self.entity_description.key) is not None

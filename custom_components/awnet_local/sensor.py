@@ -1,7 +1,6 @@
 """Support for Ambient Weather Station sensors."""
 from __future__ import annotations
 
-from datetime import datetime
 import logging
 
 from homeassistant.components.sensor import SensorEntity
@@ -17,10 +16,11 @@ from .const import (
     DOMAIN,
 )
 from .const_types import (
-    SENSOR_DESCRIPTIONS,
-    TYPE_LASTRAIN,
-    TYPE_SOLARRADIATION_LX,
+    CALCULATED_SENSOR_TYPES,
+    SENSOR_DESCRIPTIONS
 )
+
+from .helpers_calc import AmbientSensorCalculations
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,7 +33,8 @@ async def async_setup_entry(
 
     async_add_entities(
         [
-            AmbientWeatherSensor(ambient, mac_address, station[ATTR_NAME], description)
+            AmbientWeatherSensor(ambient, mac_address,
+                                 station[ATTR_NAME], description)
             for mac_address, station in ambient.stations.items()
             for description in SENSOR_DESCRIPTIONS
             if description.key in station[ATTR_LAST_DATA]
@@ -54,22 +55,15 @@ class AmbientWeatherSensor(AmbientWeatherEntity, SensorEntity):
         """Initialize the sensor."""
         super().__init__(ambient, mac_address, station_name, description)
 
-        if description.key == TYPE_SOLARRADIATION_LX:
-            # Since TYPE_SOLARRADIATION and TYPE_SOLARRADIATION_LX will have the same
-            # name in the UI, we influence the entity ID of TYPE_SOLARRADIATION_LX here
-            # to differentiate them:
-            self.entity_id = f"sensor.{station_name}_solar_rad_lx"
-
     @callback
     def update_from_latest_data(self) -> None:
         """Fetch new state data for the sensor."""
-        raw = self._ambient.stations[self._mac_address][ATTR_LAST_DATA].get(
-            self.entity_description.key
-        )
+        station_data = self._ambient.stations[self._mac_address][ATTR_LAST_DATA]
+        raw = station_data.get(self.entity_description.key)
+
+        if self.entity_description.key in CALCULATED_SENSOR_TYPES and self._attr_available:
+            raw = AmbientSensorCalculations.calculate(
+                self.entity_description.key, station_data)
+
         if raw is not None:
-            if self.entity_description.key == TYPE_LASTRAIN:
-                self._attr_native_value = datetime.strptime(
-                    raw, "%Y-%m-%dT%H:%M:%S.%f%z"
-                )
-            else:
-                self._attr_native_value = raw
+            self._attr_native_value = raw

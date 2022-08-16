@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 from homeassistant.components.binary_sensor import BinarySensorEntityDescription
 
+
 @dataclass
 class AmbientBinarySensorDescriptionMixin:
     """Define an entity description mixin for binary sensors."""
