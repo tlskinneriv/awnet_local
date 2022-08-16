@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.2.2] - 2022-08-15
+
+### Added
+
+- Calculations for the following sensors:
+  - Dew Point
+  - Feels Like
+  - Solar Radiation (Lux)
+  - Last Rain
+
+### Fixed
+
+- Fix for VS code pylint missing Home Assistant code
+- Formatting fixes
+
 ## [0.2.1] - 2022-07-31
 
 ### Added
