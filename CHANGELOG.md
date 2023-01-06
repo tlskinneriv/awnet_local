@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
-## [0.3.0] - 2023-01-05
+## [0.3.0] - 2023-01-06
 
 ### Added
 
@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning].
 - Remove underscore from default sensor names
 - Device class and native unit management (thanks @mkmer!); unit conversoins will now work
 - Clarifiy actual sensor states as "Unavailable" instead of "Unknown" in README
+- Less common sensors are disabled by default
+- Update manifest fields
 
 ### Removed
 
