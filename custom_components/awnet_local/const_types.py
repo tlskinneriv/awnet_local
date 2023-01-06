@@ -12,8 +12,7 @@ from homeassistant.const import (
     IRRADIATION_WATTS_PER_SQUARE_METER,
     LIGHT_LUX,
     PERCENTAGE,
-)
-from homeassistant.const import (
+    UnitOfIrradiance,
     UnitOfPrecipitationDepth,
     UnitOfPressure,
     UnitOfSpeed,
@@ -26,6 +25,10 @@ from .helpers import AmbientBinarySensorDescription
 
 # Sensor Types
 TYPE_24HOURRAININ = "24hourrainin"
+TYPE_AQI_PM25 = "aqi_pm25"
+TYPE_AQI_PM25_24H = "aqi_pm25_24h"
+TYPE_AQI_PM25_IN = "aqi_pm25_in"
+TYPE_AQI_PM25_IN_24H = "aqi_pm25_in_24h"
 TYPE_BAROMABSIN = "baromabsin"
 TYPE_BAROMRELIN = "baromrelin"
 TYPE_CO2 = "co2"
@@ -47,6 +50,8 @@ TYPE_HUMIDITY8 = "humidity8"
 TYPE_HUMIDITY9 = "humidity9"
 TYPE_HUMIDITYIN = "humidityin"
 TYPE_LASTRAIN = "lastRain"
+TYPE_LIGHTNING_PER_DAY = "lightning_day"
+TYPE_LIGHTNING_PER_HOUR = "lightning_hour"
 TYPE_MAXDAILYGUST = "maxdailygust"
 TYPE_MONTHLYRAININ = "monthlyrainin"
 TYPE_PM25 = "pm25"
@@ -112,8 +117,28 @@ TYPE_BATT7 = "batt7"
 TYPE_BATT8 = "batt8"
 TYPE_BATT9 = "batt9"
 TYPE_BATT_CO2 = "batt_co2"
+TYPE_BATTIN = "battin"
 TYPE_BATTOUT = "battout"
 TYPE_PM25_BATT = "batt_25"
+TYPE_BATT_LEAK1 = "batleak1"
+TYPE_BATT_LEAK2 = "batleak2"
+TYPE_BATT_LEAK3 = "batleak3"
+TYPE_BATT_LEAK4 = "batleak4"
+TYPE_BATT_LIGHTNING = "batt_lightning"
+TYPE_BATT_SM1 = "battsm1"
+TYPE_BATT_SM10 = "battsm10"
+TYPE_BATT_SM2 = "battsm2"
+TYPE_BATT_SM3 = "battsm3"
+TYPE_BATT_SM4 = "battsm4"
+TYPE_BATT_SM5 = "battsm5"
+TYPE_BATT_SM6 = "battsm6"
+TYPE_BATT_SM7 = "battsm7"
+TYPE_BATT_SM8 = "battsm8"
+TYPE_BATT_SM9 = "battsm9"
+TYPE_LEAK1 = "leak1"
+TYPE_LEAK2 = "leak2"
+TYPE_LEAK3 = "leak3"
+TYPE_LEAK4 = "leak4"
 TYPE_PM25IN_BATT = "batt_25in"
 TYPE_RELAY1 = "relay1"
 TYPE_RELAY10 = "relay10"
@@ -146,6 +171,10 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_SOLARRADIATION,
     TYPE_UV,
     TYPE_24HOURRAININ,
+    TYPE_AQI_PM25,
+    TYPE_AQI_PM25_24H,
+    TYPE_AQI_PM25_IN,
+    TYPE_AQI_PM25_IN_24H,
     TYPE_CO2,
     TYPE_DEWPOINT,
     TYPE_FEELSLIKE,
@@ -160,6 +189,8 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_HUMIDITY8,
     TYPE_HUMIDITY9,
     TYPE_LASTRAIN,
+    TYPE_LIGHTNING_PER_DAY,
+    TYPE_LIGHTNING_PER_HOUR,
     TYPE_PM25,
     TYPE_PM25_24H,
     TYPE_PM25_IN,
@@ -217,7 +248,27 @@ SUPPORTED_BINARY_SENSOR_TYPES = [
     TYPE_BATT7,
     TYPE_BATT8,
     TYPE_BATT9,
+    TYPE_BATTIN,
     TYPE_PM25_BATT,
+    TYPE_BATT_LEAK1,
+    TYPE_BATT_LEAK2,
+    TYPE_BATT_LEAK3,
+    TYPE_BATT_LEAK4,
+    TYPE_BATT_LIGHTNING,
+    TYPE_BATT_SM1,
+    TYPE_BATT_SM10,
+    TYPE_BATT_SM2,
+    TYPE_BATT_SM3,
+    TYPE_BATT_SM4,
+    TYPE_BATT_SM5,
+    TYPE_BATT_SM6,
+    TYPE_BATT_SM7,
+    TYPE_BATT_SM8,
+    TYPE_BATT_SM9,
+    TYPE_LEAK1,
+    TYPE_LEAK2,
+    TYPE_LEAK3,
+    TYPE_LEAK4,
     TYPE_PM25IN_BATT,
     TYPE_RELAY1,
     TYPE_RELAY10,
@@ -246,6 +297,31 @@ SENSOR_DESCRIPTIONS = (
         name="24 Hr Rain",
         icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
+        device_class=SensorDeviceClass.PRECIPITATION,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+    ),
+    SensorEntityDescription(
+        key=TYPE_AQI_PM25,
+        name="AQI PM2.5",
+        device_class=SensorDeviceClass.AQI,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=TYPE_AQI_PM25_24H,
+        name="AQI PM2.5 24h avg",
+        device_class=SensorDeviceClass.AQI,
+        state_class=SensorStateClass.TOTAL_INCREASING,
+    ),
+    SensorEntityDescription(
+        key=TYPE_AQI_PM25_IN,
+        name="AQI PM2.5 indoor",
+        device_class=SensorDeviceClass.AQI,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=TYPE_AQI_PM25_IN_24H,
+        name="AQI PM2.5 indoor 24h avg",
+        device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.TOTAL_INCREASING,
     ),
     SensorEntityDescription(
@@ -275,6 +351,7 @@ SENSOR_DESCRIPTIONS = (
         name="Daily Rain",
         icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
+        device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.TOTAL_INCREASING,
     ),
     SensorEntityDescription(
@@ -289,6 +366,7 @@ SENSOR_DESCRIPTIONS = (
         name="Event Rain",
         icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
+        device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -304,6 +382,7 @@ SENSOR_DESCRIPTIONS = (
         icon="mdi:water",
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_HOUR,
         state_class=SensorStateClass.MEASUREMENT,
+        device_class=SensorDeviceClass.PRECIPITATION_INTENSITY,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY10,
@@ -405,12 +484,28 @@ SENSOR_DESCRIPTIONS = (
         name="Last Rain",
         icon="mdi:water",
         device_class=SensorDeviceClass.TIMESTAMP,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=TYPE_LIGHTNING_PER_DAY,
+        name="Lightning Strikes Per Day",
+        icon="mdi:lightning-bolt",
+        native_unit_of_measurement="strikes",
+        state_class=SensorStateClass.TOTAL,
+    ),
+    SensorEntityDescription(
+        key=TYPE_LIGHTNING_PER_HOUR,
+        name="Lightning Strikes Per Hour",
+        icon="mdi:lightning-bolt",
+        native_unit_of_measurement="strikes",
+        state_class=SensorStateClass.TOTAL,
     ),
     SensorEntityDescription(
         key=TYPE_MAXDAILYGUST,
         name="Max Gust",
         icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
+        device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -418,6 +513,7 @@ SENSOR_DESCRIPTIONS = (
         name="Monthly Rain",
         icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
+        device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -615,8 +711,8 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_SOLARRADIATION,
         name="Solar Rad",
-        native_unit_of_measurement=IRRADIATION_WATTS_PER_SQUARE_METER,
-        device_class=SensorDeviceClass.ILLUMINANCE,
+        native_unit_of_measurement=UnitOfIrradiance.WATTS_PER_SQUARE_METER,
+        device_class=SensorDeviceClass.IRRADIANCE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -725,13 +821,13 @@ SENSOR_DESCRIPTIONS = (
         name="Lifetime Rain",
         icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
+        device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_UV,
         name="UV Index",
         native_unit_of_measurement="Index",
-        device_class=SensorDeviceClass.ILLUMINANCE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -739,6 +835,7 @@ SENSOR_DESCRIPTIONS = (
         name="Weekly Rain",
         icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
+        device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -774,6 +871,7 @@ SENSOR_DESCRIPTIONS = (
         name="Wind Gust",
         icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
+        device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -781,6 +879,7 @@ SENSOR_DESCRIPTIONS = (
         name="Wind Avg 10m",
         icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
+        device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -788,6 +887,7 @@ SENSOR_DESCRIPTIONS = (
         name="Wind Avg 2m",
         icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
+        device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -795,6 +895,7 @@ SENSOR_DESCRIPTIONS = (
         name="Wind Speed",
         icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
+        device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -802,6 +903,7 @@ SENSOR_DESCRIPTIONS = (
         name="Yearly Rain",
         icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
+        device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.TOTAL_INCREASING,
     ),
 )
@@ -887,12 +989,117 @@ BINARY_SENSOR_DESCRIPTIONS = (
         entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
+        key=TYPE_BATTIN,
+        name="Interior Battery",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
         key=TYPE_BATT10,
         name="Battery 10",
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
         entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_LEAK1,
+        name="Leak Detector Battery 1",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_LEAK2,
+        name="Leak Detector Battery 2",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_LEAK3,
+        name="Leak Detector Battery 3",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_LEAK4,
+        name="Leak Detector Battery 4",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_SM1,
+        name="Soil Monitor Battery 1",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_SM2,
+        name="Soil Monitor Battery 2",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_SM3,
+        name="Soil Monitor Battery 3",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_SM4,
+        name="Soil Monitor Battery 4",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_SM5,
+        name="Soil Monitor Battery 5",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_SM6,
+        name="Soil Monitor Battery 6",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_SM7,
+        name="Soil Monitor Battery 7",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_SM8,
+        name="Soil Monitor Battery 8",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_SM9,
+        name="Soil Monitor Battery 9",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATT_SM10,
+        name="Soil Monitor Battery 10",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_CO2,
