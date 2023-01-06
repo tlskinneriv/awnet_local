@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning].
 ### Changed
 
 - Remove underscore from default sensor names
-- Device class and native unit management (thanks @mkmer!); unit conversoins will now work
+- Device class and native unit management (thanks @mkmer); unit conversoins will now work
 - Clarifiy actual sensor states as "Unavailable" instead of "Unknown" in README
 - Less common sensors are disabled by default
 - Update manifest fields
