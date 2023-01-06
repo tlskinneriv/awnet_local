@@ -27,8 +27,8 @@ and this project adheres to [Semantic Versioning].
 ### Changed
 
 - Remove underscore from default sensor names
-- Device class and native unit management (thanks [@mkmer]!); unit conversoins will now work
-- Clarifiy actual sensor states as "Unavailable" instead of "Unknown" in README
+- Device class and native unit management (thanks @mkmer!); unit conversions will now work
+- Clarify actual sensor states as "Unavailable" instead of "Unknown" in README
 - Less common sensors are disabled by default
 - Update manifest fields
 
@@ -99,7 +99,6 @@ and this project adheres to [Semantic Versioning].
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
-[@mkmer]: (https://github.com/mkmer)
 
 <!-- Versions -->
 
