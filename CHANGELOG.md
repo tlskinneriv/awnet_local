@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.3.0] - 2023-01-05
+
+### Added
+
+- New sensors pulled from the native HA Ambient Weather integration:
+  - AQI PM2.5
+  - AQI PM2.5 24h avg
+  - AQI PM2.5 indoor
+  - AQI PM2.5 indoor 24h avg
+  - Lightning Strikes Per Day
+  - Lightning Strikes Per Hour
+- New binary sensors pulled from the native HA Ambient Weather integration:
+  - Interior Battery
+  - Leak Detector 1-4
+  - Leak Detector Battery 1-4
+  - Lightning Detector Battery
+  - Soil Monitor Battery 1-10
+- Default icon for UV Index sensor
+
+### Changed
+
+- Remove underscore from default sensor names
+- Device class and native unit management (thanks @mkmer!); unit conversoins will now work
+- Clarifiy actual sensor states as "Unavailable" instead of "Unknown" in README
+
+### Removed
+
+- Default icons where no longer needed:
+  - 24 Hr Rain
+  - Daily Rain
+  - Event Rain
+  - Hourly Rain Rate
+  - Lifetime Rain
+  - Max Gust
+  - Monthly Rain
+  - Weekly Rain
+  - Wind Avg 10m
+  - Wind Avg 2m
+  - Wind Gust
+  - Wind Speed
+  - Yearly Rain
+
 ## [0.2.2] - 2022-08-15
 
 ### Added
