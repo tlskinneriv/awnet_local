@@ -826,7 +826,7 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_UV,
         name="UV Index",
-        icon="mdi:sun-wireless"
+        icon="mdi:sun-wireless",
         native_unit_of_measurement="Index",
         state_class=SensorStateClass.MEASUREMENT,
     ),
