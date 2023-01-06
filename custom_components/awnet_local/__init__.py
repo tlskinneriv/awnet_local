@@ -147,7 +147,7 @@ class AmbientWeatherEntity(Entity):
             name=station_name,
         )
 
-        self._attr_name = f"{station_name}_{description.name}"
+        self._attr_name = f"{station_name} {description.name}"
         self._attr_unique_id = f"{mac_address}_{description.key}"
         self._mac_address = mac_address
         self._attr_available = False
