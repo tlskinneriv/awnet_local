@@ -295,7 +295,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_24HOURRAININ,
         name="24 Hr Rain",
-        icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.TOTAL_INCREASING,
@@ -349,7 +348,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_DAILYRAININ,
         name="Daily Rain",
-        icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.TOTAL_INCREASING,
@@ -364,7 +362,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_EVENTRAININ,
         name="Event Rain",
-        icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
@@ -379,7 +376,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_HOURLYRAININ,
         name="Hourly Rain Rate",
-        icon="mdi:water",
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_HOUR,
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.PRECIPITATION_INTENSITY,
@@ -503,7 +499,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_MAXDAILYGUST,
         name="Max Gust",
-        icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
@@ -511,7 +506,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_MONTHLYRAININ,
         name="Monthly Rain",
-        icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
@@ -819,7 +813,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_TOTALRAININ,
         name="Lifetime Rain",
-        icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
@@ -833,7 +826,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_WEEKLYRAININ,
         name="Weekly Rain",
-        icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
@@ -869,7 +861,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_WINDGUSTMPH,
         name="Wind Gust",
-        icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
@@ -877,7 +868,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_WINDSPDMPH_AVG10M,
         name="Wind Avg 10m",
-        icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
@@ -885,7 +875,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_WINDSPDMPH_AVG2M,
         name="Wind Avg 2m",
-        icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
@@ -893,7 +882,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_WINDSPEEDMPH,
         name="Wind Speed",
-        icon="mdi:weather-windy",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
@@ -901,7 +889,6 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_YEARLYRAININ,
         name="Yearly Rain",
-        icon="mdi:water",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.TOTAL_INCREASING,
