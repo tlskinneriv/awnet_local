@@ -484,7 +484,6 @@ SENSOR_DESCRIPTIONS = (
         name="Last Rain",
         icon="mdi:water",
         device_class=SensorDeviceClass.TIMESTAMP,
-        state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_LIGHTNING_PER_DAY,
