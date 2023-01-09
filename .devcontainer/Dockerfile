@@ -1,4 +1,6 @@
-FROM mcr.microsoft.com/vscode/devcontainers/python:0-3.9
+ARG VARIANT
+
+FROM mcr.microsoft.com/vscode/devcontainers/python:$VARIANT
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -34,16 +36,19 @@ RUN \
 RUN mkdir /srv/homeassistant \
     && chown vscode:vscode /srv/homeassistant
 
+COPY .devcontainer/setup.sh /srv/homeassistant/
+
+RUN chown vscode:vscode /srv/homeassistant/setup.sh \
+    && chmod 755 /srv/homeassistant/setup.sh
+
 USER vscode
 
 WORKDIR /srv/homeassistant
 
-RUN python3.9 -m venv . \
+RUN python -m venv . \
     && source bin/activate \
     && python -m pip install wheel \
     && pip3 install homeassistant
-
-COPY .devcontainer/setup.sh .
 
 RUN ./setup.sh
 
