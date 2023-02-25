@@ -25,9 +25,12 @@ from .const import (
     DOMAIN,
 )
 
-from .const_types import (
-    SUPPORTED_SENSOR_TYPES,
+from .const_binary_sensor import (
     SUPPORTED_BINARY_SENSOR_TYPES,
+)
+
+from .const_sensor import (
+    SUPPORTED_SENSOR_TYPES,
     CALCULATED_SENSOR_TYPES,
 )
 
@@ -39,7 +42,7 @@ MAC_REGEX = r"^(?:[a-f0-9]{2}:){5}[a-f0-9]{2}$"
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-
+    """Setup the integration based on configuration data. Register the service."""
     if not entry.unique_id:
         hass.config_entries.async_update_entry(entry, unique_id=entry.data[CONF_MAC])
 
@@ -100,6 +103,8 @@ class AmbientStation:
         self.add_station(entry.data[CONF_MAC], entry.data[CONF_NAME])
 
     def add_station(self, mac: str, name: str) -> None:
+        """Add a station to the list of stations in the integration data; currently the integration
+        only supports 1 as configured from the UI."""
         if mac not in self.stations:
             self.stations.setdefault(mac, {})
             self.stations[mac][ATTR_NAME] = name
@@ -111,6 +116,7 @@ class AmbientStation:
                 self._entry_setup_complete = True
 
     def on_data(self, mac: str, data: dict) -> None:
+        """Processes the data from the incoming service call to update the sensors."""
         _LOGGER.info("Processing data")
         _LOGGER.info("MAC address: %s", mac)
         _LOGGER.debug("New data received: %s", data)

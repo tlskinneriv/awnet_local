@@ -45,7 +45,8 @@
     "redhat.vscode-yaml",
     "rlnt.keep-a-changelog",
     "esbenp.prettier-vscode",
-    "GitHub.vscode-pull-request-github"
+    "GitHub.vscode-pull-request-github",
+    "streetsidesoftware.code-spell-checker"
   ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.

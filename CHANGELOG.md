@@ -5,16 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
-## [unreleased] - 2023-01-09
+## [unreleased] - 2023-01-10
+
+### Added
+
+- Minimum Home Assistant version (currently 2023.1.0) for unit compatibility
 
 ### Changed
 
 - New entity name format (thanks @mkmer!)
 
-### VSCode
+### Housekeeping
 
 - Updated dev environment
 - Bump to Python 3.10 for devcontainer
+- Adopt black as formatter for Python code
+- Add missing inline documentation
+- Break sensor and binary_sensor constants into separate files
 
 ## [0.3.0] - 2023-01-06
 

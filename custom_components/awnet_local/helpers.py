@@ -1,3 +1,8 @@
+"""Helper Classes
+
+These classes provide helpers for determining valid states and descriptions as code
+"""
+
 from typing import Literal
 from dataclasses import dataclass
 

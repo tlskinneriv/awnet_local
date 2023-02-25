@@ -1,4 +1,5 @@
 """Support for Ambient Weather Station binary sensors."""
+
 from __future__ import annotations
 
 from homeassistant.components.binary_sensor import BinarySensorEntity
@@ -9,7 +10,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import AmbientWeatherEntity
 from .const import ATTR_LAST_DATA, DOMAIN
-from .const_types import BINARY_SENSOR_DESCRIPTIONS
+from .const_binary_sensor import BINARY_SENSOR_DESCRIPTIONS
 from .helpers import AmbientBinarySensorDescription
 
 

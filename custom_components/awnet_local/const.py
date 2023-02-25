@@ -1,5 +1,11 @@
+"""Constants
+
+Covers constant values used in the integration that have not already been defined elsewhere and are
+not definitions of sensors. Usually strings we don't want to accidentally mistype.
+"""
+
 # domain
-DOMAIN = 'awnet_local'
+DOMAIN = "awnet_local"
 
 # configuration parameters
 CONF_MAC = "station_mac"
