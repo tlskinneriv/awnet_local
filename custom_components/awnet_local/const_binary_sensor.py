@@ -52,6 +52,17 @@ TYPE_RELAY6 = "relay6"
 TYPE_RELAY7 = "relay7"
 TYPE_RELAY8 = "relay8"
 TYPE_RELAY9 = "relay9"
+TYPE_BATTR1 = "battr1"
+TYPE_BATTR10 = "battr10"
+TYPE_BATTR2 = "battr2"
+TYPE_BATTR3 = "battr3"
+TYPE_BATTR4 = "battr4"
+TYPE_BATTR5 = "battr5"
+TYPE_BATTR6 = "battr6"
+TYPE_BATTR7 = "battr7"
+TYPE_BATTR8 = "battr8"
+TYPE_BATTR9 = "battr9"
+TYPE_BATTRAIN = "battrain"
 
 SUPPORTED_BINARY_SENSOR_TYPES = [
     TYPE_BATT_CO2,
@@ -98,6 +109,17 @@ SUPPORTED_BINARY_SENSOR_TYPES = [
     TYPE_RELAY7,
     TYPE_RELAY8,
     TYPE_RELAY9,
+    TYPE_BATTR1,
+    TYPE_BATTR10,
+    TYPE_BATTR2,
+    TYPE_BATTR3,
+    TYPE_BATTR4,
+    TYPE_BATTR5,
+    TYPE_BATTR6,
+    TYPE_BATTR7,
+    TYPE_BATTR8,
+    TYPE_BATTR9,
+    TYPE_BATTRAIN,
 ]
 
 BINARY_SENSOR_DESCRIPTIONS = (
@@ -445,6 +467,94 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTRAIN,
+        name="Rain Guage Battery",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTR1,
+        name="Relay Battery 1",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTR2,
+        name="Relay Battery 2",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTR3,
+        name="Relay Battery 3",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTR4,
+        name="Relay Battery 4",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTR5,
+        name="Relay Battery 5",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTR6,
+        name="Relay Battery 6",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTR7,
+        name="Relay Battery 7",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTR8,
+        name="Relay Battery 8",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTR9,
+        name="Relay Battery 9",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
+        entity_registry_enabled_default=False,
+    ),
+    AmbientBinarySensorDescription(
+        key=TYPE_BATTR10,
+        name="Relay Battery 10",
+        device_class=BinarySensorDeviceClass.BATTERY,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        on_state=0,
         entity_registry_enabled_default=False,
     ),
 )

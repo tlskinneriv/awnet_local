@@ -18,6 +18,11 @@ from .const_sensor import (
     TYPE_WINDSPEEDMPH,
     TYPE_HUMIDITY,
     TYPE_DEWPOINT,
+    TYPE_LIGHTNING_TIME,
+    TYPE_FEELSLIKE_IN,
+    TYPE_DEWPOINT_IN,
+    TYPE_TEMPINF,
+    TYPE_HUMIDITYIN,
 )
 
 
@@ -56,6 +61,16 @@ class AmbientSensorCalculations:
                 float(station_values.get(TYPE_TEMPF)),
                 float(station_values.get(TYPE_HUMIDITY)),
             )
+        if entity_key == TYPE_FEELSLIKE_IN:
+            return AmbientSensorCalculations.heat_index(
+                float(station_values.get(TYPE_TEMPINF)),
+                float(station_values.get(TYPE_HUMIDITYIN)),
+            )
+        if entity_key == TYPE_DEWPOINT_IN:
+            return AmbientSensorCalculations.dew_point(
+                float(station_values.get(TYPE_TEMPINF)),
+                float(station_values.get(TYPE_HUMIDITYIN)),
+            )
         raise NotImplementedError(f"Calculation for {entity_key} is not implemented")
 
     @staticmethod
@@ -89,17 +104,33 @@ class AmbientSensorCalculations:
 
     @staticmethod
     def feels_like(tempf: float, wind_mph: float, rel_humid_percent: float) -> float:
-        """Calculates the feels-like temperature based on temperauter, wind speed, and relative
-        humidity. Below 50 F and 3+ mph wind calls for wind chill, above 68 F calls for heat index.
+        """Calculates the feels-like temperature based on temperature, wind speed, and relative
+        humidity.
         Formulas used come from weather.gov calculators
 
         Args:
-            tempf (float): temperature in Farenheit
+            tempf (float): temperature in Fahrenheit
             wind_mph (float): wind speed in MPH
             rel_humid_percent (float): relative humidity in percentage (0-100)
 
         Returns:
-            float: feel like termperature in Farenheit
+            float: feel like temperature in Fahrenheit
+        """
+        if tempf > 68:
+            return AmbientSensorCalculations.heat_index(tempf, rel_humid_percent)
+        return AmbientSensorCalculations.wind_chill(tempf, wind_mph)
+
+    @staticmethod
+    def wind_chill(tempf: float, wind_mph: float) -> float:
+        """Calculates the wind chill. Below 50 F and 3+ mph wind calls for wind chill calc,
+        otherwise return the temperature passed.
+
+        Args:
+            tempf (float): temperature in Fahrenheit
+            wind_mph (float): wind speed in MPH
+
+        Returns:
+            float: wind chill in Fahrenheit
         """
         if tempf < 50 and wind_mph >= 3:
             # calculate the wind chill
@@ -114,6 +145,21 @@ class AmbientSensorCalculations:
                     1,
                 )
             )
+        # outside the range, return the temp
+        return tempf
+
+    @staticmethod
+    def heat_index(tempf: float, rel_humid_percent: float) -> float:
+        """Calculates the heat index. Above 68 F calls for heat index calc, otherwise return the
+        temperature passed.
+
+        Args:
+            tempf (float): temperature in Fahrenheit
+            rel_humid_percent (float): relative humidity in percentage
+
+        Returns:
+            float: heat index in Fahrenheit
+        """
         if tempf > 68:
             # calculate the heat index
             rel_humid_dec = rel_humid_percent
@@ -161,3 +207,28 @@ class AmbientSensorCalculations:
         )
         dew_pt_c = (const_c * gamma_t_rh) / (const_b - gamma_t_rh)
         return float(round(dew_pt_c * 9 / 5 + 32, 1))
+
+
+class AmbientSensorConversions:
+    """Class full of static methods for performing conversions from native units to HA units where
+    the raw unit is not supported by HA
+    """
+
+    @staticmethod
+    def convert(entity_key: str, value: object) -> object:
+        """Calls the correct calculation function and returns the data for it
+
+        Args:
+            entity_key (str): key for the entity to find in the station data
+            value (object): data value to convert
+
+        Returns:
+            any: converted value for the field
+        """
+        if entity_key == TYPE_LIGHTNING_TIME:
+            return AmbientSensorConversions.epoch_to_datetime(int(value))
+        raise NotImplementedError(f"Conversion for {entity_key} is not implemented")
+
+    @staticmethod
+    def epoch_to_datetime(epoch: int) -> str:
+        return datetime.fromtimestamp(epoch, timezone.utc)

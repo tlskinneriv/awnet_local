@@ -10,10 +10,28 @@ and this project adheres to [Semantic Versioning].
 ### Added
 
 - Minimum Home Assistant version (currently 2023.1.0) for unit compatibility
+- New sensors based on the information at https://ambientweather.com/faqs/question/view/id/1857/
+  - CO2 Indoor
+  - CO2 Indoor 24h Avg
+  - Lightning Strike Distance
+  - Lightning Strike Timestamp
+  - PM Indoor Humidity
+  - PM Indoor Temp
+  - PM10 Indoor
+  - PM10 Indoor 24h Avg
+- New calculated sensors based on new information at
+  https://github.com/ambient-weather/api-docs/wiki/Device-Data-Specs#data-timing
+  - Dew Point Indoor
+  - Feels Like Indoor
+- New binary sensors based on the information at
+  https://ambientweather.com/faqs/question/view/id/1857/
+  - Rain Guage Battery
+  - Relay 1-10 Battery
 
 ### Changed
 
 - New entity name format (thanks @mkmer!)
+- Updated default sensor names for case consistency
 
 ### Housekeeping
 

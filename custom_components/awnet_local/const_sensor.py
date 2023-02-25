@@ -15,6 +15,7 @@ from homeassistant.const import (
     DEGREE,
     LIGHT_LUX,
     PERCENTAGE,
+    UnitOfLength,
     UnitOfIrradiance,
     UnitOfPrecipitationDepth,
     UnitOfPressure,
@@ -32,10 +33,14 @@ TYPE_AQI_PM25_IN_24H = "aqi_pm25_in_24h"
 TYPE_BAROMABSIN = "baromabsin"
 TYPE_BAROMRELIN = "baromrelin"
 TYPE_CO2 = "co2"
+TYPE_CO2_IN = "co2_in"
+TYPE_CO2_IN_24H = "co2_in_24h"
 TYPE_DAILYRAININ = "dailyrainin"
 TYPE_DEWPOINT = "dewPoint"
+TYPE_DEWPOINT_IN = "dewPointin"
 TYPE_EVENTRAININ = "eventrainin"
 TYPE_FEELSLIKE = "feelsLike"
+TYPE_FEELSLIKE_IN = "feelsLikein"
 TYPE_HOURLYRAININ = "hourlyrainin"
 TYPE_HUMIDITY = "humidity"
 TYPE_HUMIDITY1 = "humidity1"
@@ -50,10 +55,16 @@ TYPE_HUMIDITY8 = "humidity8"
 TYPE_HUMIDITY9 = "humidity9"
 TYPE_HUMIDITYIN = "humidityin"
 TYPE_LASTRAIN = "lastRain"
+TYPE_LIGHTNING_DISTANCE = "lightning_distance"
 TYPE_LIGHTNING_PER_DAY = "lightning_day"
 TYPE_LIGHTNING_PER_HOUR = "lightning_hour"
+TYPE_LIGHTNING_TIME = "lightning_time"
 TYPE_MAXDAILYGUST = "maxdailygust"
 TYPE_MONTHLYRAININ = "monthlyrainin"
+TYPE_PM_IN_HUMIDITY = "pm_in_humidity"
+TYPE_PM_IN_TEMP = "pm_in_temp"
+TYPE_PM10_IN = "pm10_in"
+TYPE_PM10_IN_24H = "pm10_in_24h"
 TYPE_PM25 = "pm25"
 TYPE_PM25_24H = "pm25_24h"
 TYPE_PM25_IN = "pm25_in"
@@ -96,42 +107,34 @@ TYPE_TOTALRAININ = "totalrainin"
 TYPE_UV = "uv"
 TYPE_WEEKLYRAININ = "weeklyrainin"
 TYPE_WINDDIR = "winddir"
-TYPE_WINDDIR_AVG10M = "winddir_avg10m"
-TYPE_WINDDIR_AVG2M = "winddir_avg2m"
+TYPE_WINDDIR_AVG10M = "winddir_Avg10m"
+TYPE_WINDDIR_AVG2M = "winddir_Avg2m"
 TYPE_WINDGUSTDIR = "windgustdir"
 TYPE_WINDGUSTMPH = "windgustmph"
-TYPE_WINDSPDMPH_AVG10M = "windspdmph_avg10m"
-TYPE_WINDSPDMPH_AVG2M = "windspdmph_avg2m"
+TYPE_WINDSPDMPH_AVG10M = "windspdmph_Avg10m"
+TYPE_WINDSPDMPH_AVG2M = "windspdmph_Avg2m"
 TYPE_WINDSPEEDMPH = "windspeedmph"
 TYPE_YEARLYRAININ = "yearlyrainin"
 
 SUPPORTED_SENSOR_TYPES = [
-    TYPE_TEMPINF,
-    TYPE_HUMIDITYIN,
-    TYPE_BAROMRELIN,
-    TYPE_BAROMABSIN,
-    TYPE_TEMPF,
-    TYPE_HUMIDITY,
-    TYPE_WINDDIR,
-    TYPE_WINDSPEEDMPH,
-    TYPE_WINDGUSTMPH,
-    TYPE_MAXDAILYGUST,
-    TYPE_HOURLYRAININ,
-    TYPE_EVENTRAININ,
-    TYPE_DAILYRAININ,
-    TYPE_WEEKLYRAININ,
-    TYPE_MONTHLYRAININ,
-    TYPE_TOTALRAININ,
-    TYPE_SOLARRADIATION,
-    TYPE_UV,
     TYPE_24HOURRAININ,
-    TYPE_AQI_PM25,
     TYPE_AQI_PM25_24H,
-    TYPE_AQI_PM25_IN,
     TYPE_AQI_PM25_IN_24H,
+    TYPE_AQI_PM25_IN,
+    TYPE_AQI_PM25,
+    TYPE_BAROMABSIN,
+    TYPE_BAROMRELIN,
+    TYPE_CO2_IN_24H,
+    TYPE_CO2_IN,
     TYPE_CO2,
+    TYPE_DAILYRAININ,
+    TYPE_DEWPOINT_IN,
     TYPE_DEWPOINT,
+    TYPE_EVENTRAININ,
+    TYPE_FEELSLIKE_IN,
     TYPE_FEELSLIKE,
+    TYPE_HOURLYRAININ,
+    TYPE_HUMIDITY,
     TYPE_HUMIDITY1,
     TYPE_HUMIDITY10,
     TYPE_HUMIDITY2,
@@ -142,13 +145,22 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_HUMIDITY7,
     TYPE_HUMIDITY8,
     TYPE_HUMIDITY9,
+    TYPE_HUMIDITYIN,
     TYPE_LASTRAIN,
+    TYPE_LIGHTNING_DISTANCE,
     TYPE_LIGHTNING_PER_DAY,
     TYPE_LIGHTNING_PER_HOUR,
-    TYPE_PM25,
+    TYPE_LIGHTNING_TIME,
+    TYPE_MAXDAILYGUST,
+    TYPE_MONTHLYRAININ,
+    TYPE_PM_IN_HUMIDITY,
+    TYPE_PM_IN_TEMP,
+    TYPE_PM10_IN_24H,
+    TYPE_PM10_IN,
     TYPE_PM25_24H,
-    TYPE_PM25_IN,
     TYPE_PM25_IN_24H,
+    TYPE_PM25_IN,
+    TYPE_PM25,
     TYPE_SOILHUM1,
     TYPE_SOILHUM10,
     TYPE_SOILHUM2,
@@ -170,6 +182,7 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_SOILTEMP8F,
     TYPE_SOILTEMP9F,
     TYPE_SOLARRADIATION_LX,
+    TYPE_SOLARRADIATION,
     TYPE_TEMP10F,
     TYPE_TEMP1F,
     TYPE_TEMP2F,
@@ -180,12 +193,19 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_TEMP7F,
     TYPE_TEMP8F,
     TYPE_TEMP9F,
+    TYPE_TEMPF,
+    TYPE_TEMPINF,
+    TYPE_TOTALRAININ,
+    TYPE_UV,
+    TYPE_WEEKLYRAININ,
     TYPE_WINDDIR_AVG10M,
     TYPE_WINDDIR_AVG2M,
+    TYPE_WINDDIR,
     TYPE_WINDGUSTDIR,
     TYPE_WINDGUSTMPH,
     TYPE_WINDSPDMPH_AVG10M,
     TYPE_WINDSPDMPH_AVG2M,
+    TYPE_WINDSPEEDMPH,
     TYPE_YEARLYRAININ,
 ]
 
@@ -196,7 +216,12 @@ CALCULATED_SENSOR_TYPES = {
     TYPE_FEELSLIKE: [TYPE_TEMPF, TYPE_WINDSPEEDMPH, TYPE_HUMIDITY],
     TYPE_DEWPOINT: [TYPE_TEMPF, TYPE_HUMIDITY],
     TYPE_SOLARRADIATION_LX: [TYPE_SOLARRADIATION],
+    TYPE_FEELSLIKE_IN: [TYPE_TEMPINF, TYPE_HUMIDITYIN],
+    TYPE_DEWPOINT_IN: [TYPE_TEMPINF, TYPE_HUMIDITYIN],
 }
+
+# Each sensor listed here is converted server-side from the native unit to the unit that HA supports
+CONVERTED_SENSOR_TYPES = [TYPE_LIGHTNING_TIME]
 
 SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
@@ -215,21 +240,21 @@ SENSOR_DESCRIPTIONS = (
     ),
     SensorEntityDescription(
         key=TYPE_AQI_PM25_24H,
-        name="AQI PM2.5 24h avg",
+        name="AQI PM2.5 24h Avg",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.TOTAL_INCREASING,
         entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_AQI_PM25_IN,
-        name="AQI PM2.5 indoor",
+        name="AQI PM2.5 Indoor",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_AQI_PM25_IN_24H,
-        name="AQI PM2.5 indoor 24h avg",
+        name="AQI PM2.5 Indoor 24h Avg",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.TOTAL_INCREASING,
         entity_registry_enabled_default=False,
@@ -250,7 +275,23 @@ SENSOR_DESCRIPTIONS = (
     ),
     SensorEntityDescription(
         key=TYPE_CO2,
-        name="co2",
+        name="CO2",
+        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+        device_class=SensorDeviceClass.CO2,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_CO2_IN,
+        name="CO2 Indoor",
+        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+        device_class=SensorDeviceClass.CO2,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_CO2_IN_24H,
+        name="CO2 Indoor 24h Avg",
         native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
         device_class=SensorDeviceClass.CO2,
         state_class=SensorStateClass.MEASUREMENT,
@@ -271,6 +312,13 @@ SENSOR_DESCRIPTIONS = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
+        key=TYPE_DEWPOINT_IN,
+        name="Dew Point Indoor",
+        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
         key=TYPE_EVENTRAININ,
         name="Event Rain",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
@@ -280,6 +328,13 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_FEELSLIKE,
         name="Feels Like",
+        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=TYPE_FEELSLIKE_IN,
+        name="Feels Like Indoor",
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -393,6 +448,14 @@ SENSOR_DESCRIPTIONS = (
         device_class=SensorDeviceClass.TIMESTAMP,
     ),
     SensorEntityDescription(
+        key=TYPE_LIGHTNING_DISTANCE,
+        name="Lightning Strike Distance",
+        icon="mdi:lightning-bolt",
+        native_unit_of_measurement=UnitOfLength.KILOMETERS,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
         key=TYPE_LIGHTNING_PER_DAY,
         name="Lightning Strikes Per Day",
         icon="mdi:lightning-bolt",
@@ -409,6 +472,13 @@ SENSOR_DESCRIPTIONS = (
         entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
+        key=TYPE_LIGHTNING_TIME,
+        name="Lightning Strike Timestamp",
+        icon="mdi:lightning-bolt",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
         key=TYPE_MAXDAILYGUST,
         name="Max Gust",
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
@@ -421,6 +491,38 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=TYPE_PM_IN_HUMIDITY,
+        name="PM Indoor Humidity",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.HUMIDITY,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_PM_IN_TEMP,
+        name="PM Indoor Temp",
+        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_PM10_IN,
+        name="PM10 Indoor",
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        device_class=SensorDeviceClass.PM10,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_PM10_IN_24H,
+        name="PM10 Indoor 24h Avg",
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        device_class=SensorDeviceClass.PM10,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_24H,

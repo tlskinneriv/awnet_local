@@ -15,9 +15,13 @@ from .const import (
     ATTR_LAST_DATA,
     DOMAIN,
 )
-from .const_sensor import CALCULATED_SENSOR_TYPES, SENSOR_DESCRIPTIONS
+from .const_sensor import (
+    CALCULATED_SENSOR_TYPES,
+    SENSOR_DESCRIPTIONS,
+    CONVERTED_SENSOR_TYPES,
+)
 
-from .helpers_calc import AmbientSensorCalculations
+from .helpers_calc import AmbientSensorCalculations, AmbientSensorConversions
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -47,6 +51,7 @@ class AmbientWeatherSensor(AmbientWeatherEntity, SensorEntity):
         station_data = self._ambient.stations[self._mac_address][ATTR_LAST_DATA]
         raw = station_data.get(self.entity_description.key)
 
+        # calculation of sensor values
         if (
             self.entity_description.key in CALCULATED_SENSOR_TYPES
             and self._attr_available
@@ -56,4 +61,8 @@ class AmbientWeatherSensor(AmbientWeatherEntity, SensorEntity):
             )
 
         if raw is not None:
+            # conversion of native units to HA supported units
+            if self.entity_description.key in CONVERTED_SENSOR_TYPES:
+                raw = AmbientSensorConversions.convert(self.entity_description.key, raw)
+
             self._attr_native_value = raw
