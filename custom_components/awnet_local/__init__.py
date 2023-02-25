@@ -25,6 +25,7 @@ from .const import (
     CONF_MAC,
     CONF_NAME,
     DOMAIN,
+    MAC_REGEX,
 )
 
 from .const_binary_sensor import (
@@ -39,8 +40,6 @@ from .const_sensor import (
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
-
-MAC_REGEX = r"^(?:[a-f0-9]{2}:){5}[a-f0-9]{2}$"
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
