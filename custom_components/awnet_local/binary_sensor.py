@@ -9,7 +9,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import AmbientWeatherEntity
-from .const import ATTR_LAST_DATA, DOMAIN
+from .const import ATTR_LAST_DATA, DOMAIN, ATTR_KNOWN_SENSORS
 from .const_binary_sensor import BINARY_SENSOR_DESCRIPTIONS
 from .helpers import AmbientBinarySensorDescription
 
@@ -27,7 +27,7 @@ async def async_setup_entry(
             )
             for mac_address, station in ambient.stations.items()
             for description in BINARY_SENSOR_DESCRIPTIONS
-            if description.key in station[ATTR_LAST_DATA]
+            if description.key in station[ATTR_KNOWN_SENSORS]
         ]
     )
 

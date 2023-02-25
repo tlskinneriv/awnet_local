@@ -13,6 +13,7 @@ from homeassistant.const import ATTR_NAME
 from . import AmbientWeatherEntity
 from .const import (
     ATTR_LAST_DATA,
+    ATTR_KNOWN_SENSORS,
     DOMAIN,
 )
 from .const_sensor import (
@@ -37,7 +38,7 @@ async def async_setup_entry(
             AmbientWeatherSensor(ambient, mac_address, station[ATTR_NAME], description)
             for mac_address, station in ambient.stations.items()
             for description in SENSOR_DESCRIPTIONS
-            if description.key in station[ATTR_LAST_DATA]
+            if description.key in station[ATTR_KNOWN_SENSORS]
         ]
     )
 

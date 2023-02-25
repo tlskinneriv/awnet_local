@@ -20,6 +20,8 @@ from .const import (
     ATTR_LAST_DATA,
     ATTR_PASSKEY,
     ATTR_MAC,
+    ATTR_KNOWN_SENSORS,
+    ATTR_SENSOR_UPDATE_IN_PROGRESS,
     CONF_MAC,
     CONF_NAME,
     DOMAIN,
@@ -77,7 +79,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         _LOGGER.debug(
             "Last data: %s", hass.data[DOMAIN][entry.entry_id].stations.get(mac, None)
         )
-        hass.data[DOMAIN][entry.entry_id].on_data(mac, call.data)
+        await hass.data[DOMAIN][entry.entry_id].async_on_data(mac, call.data)
 
     hass.services.async_register(DOMAIN, "update", async_handle_update)
 
@@ -109,13 +111,13 @@ class AmbientStation:
             self.stations.setdefault(mac, {})
             self.stations[mac][ATTR_NAME] = name
             self.stations[mac].setdefault(ATTR_LAST_DATA, {})
-            for attr_type in SUPPORTED_SENSOR_TYPES + SUPPORTED_BINARY_SENSOR_TYPES:
-                self.stations[mac][ATTR_LAST_DATA][attr_type] = None
+            self.stations[mac].setdefault(ATTR_KNOWN_SENSORS, [])
+            self.stations[mac][ATTR_SENSOR_UPDATE_IN_PROGRESS] = False
             if not self._entry_setup_complete:
                 self._hass.config_entries.async_setup_platforms(self._entry, PLATFORMS)
                 self._entry_setup_complete = True
 
-    def on_data(self, mac: str, data: dict) -> None:
+    async def async_on_data(self, mac: str, data: dict) -> None:
         """Processes the data from the incoming service call to update the sensors."""
         _LOGGER.info("Processing data")
         _LOGGER.info("MAC address: %s", mac)
@@ -125,9 +127,27 @@ class AmbientStation:
             for key, value in data.items()
             if key in (SUPPORTED_SENSOR_TYPES + SUPPORTED_BINARY_SENSOR_TYPES)
         }
-        if extracted_data == self.stations[mac][ATTR_LAST_DATA]:
+        if (
+            extracted_data == self.stations[mac][ATTR_LAST_DATA]
+            and not self.stations[mac][ATTR_SENSOR_UPDATE_IN_PROGRESS]
+        ):
             return
         self.stations[mac][ATTR_LAST_DATA] = extracted_data
+        known_sensors = list(
+            set(self.stations[mac][ATTR_KNOWN_SENSORS] + list(extracted_data.keys()))
+        )
+        _LOGGER.info(
+            "Previously known sensors: %s", self.stations[mac][ATTR_KNOWN_SENSORS]
+        )
+        _LOGGER.info("Now known sensors: %s", known_sensors)
+        if known_sensors != self.stations[mac][ATTR_KNOWN_SENSORS]:
+            self.stations[mac][ATTR_KNOWN_SENSORS] = known_sensors
+            await self._hass.config_entries.async_unload_platforms(
+                self._entry, PLATFORMS
+            )
+            await self._hass.config_entries.async_forward_entry_setups(
+                self._entry, PLATFORMS
+            )
         async_dispatcher_send(self._hass, f"{DOMAIN}_data_update_{mac}")
 
 
