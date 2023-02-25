@@ -21,15 +21,20 @@ from homeassistant.const import (
     UnitOfPressure,
     UnitOfSpeed,
     UnitOfTemperature,
+    UnitOfTime,
     UnitOfVolumetricFlux,
 )
 
 # Sensor Types
 TYPE_24HOURRAININ = "24hourrainin"
+TYPE_AQI_PM10_IN_24H_AQIN = "aqi_pm10_in_24h_aqin"
+TYPE_AQI_PM10_IN_AQIN = "aqi_pm10_in_aqin"
 TYPE_AQI_PM25 = "aqi_pm25"
 TYPE_AQI_PM25_24H = "aqi_pm25_24h"
 TYPE_AQI_PM25_IN = "aqi_pm25_in"
 TYPE_AQI_PM25_IN_24H = "aqi_pm25_in_24h"
+TYPE_AQI_PM25_IN_24H_AQIN = "aqi_pm25_in_24h_aqin"
+TYPE_AQI_PM25_IN_AQIN = "aqi_pm25_in_aqin"
 TYPE_BAROMABSIN = "baromabsin"
 TYPE_BAROMRELIN = "baromrelin"
 TYPE_CO2 = "co2"
@@ -38,9 +43,12 @@ TYPE_CO2_IN_24H = "co2_in_24h"
 TYPE_DAILYRAININ = "dailyrainin"
 TYPE_DEWPOINT = "dewPoint"
 TYPE_DEWPOINT_IN = "dewPointin"
+TYPE_ETOS = "etos"
+TYPE_ETRS = "etrs"
 TYPE_EVENTRAININ = "eventrainin"
 TYPE_FEELSLIKE = "feelsLike"
 TYPE_FEELSLIKE_IN = "feelsLikein"
+TYPE_GDD = "gdd"
 TYPE_HOURLYRAININ = "hourlyrainin"
 TYPE_HUMIDITY = "humidity"
 TYPE_HUMIDITY1 = "humidity1"
@@ -55,6 +63,14 @@ TYPE_HUMIDITY8 = "humidity8"
 TYPE_HUMIDITY9 = "humidity9"
 TYPE_HUMIDITYIN = "humidityin"
 TYPE_LASTRAIN = "lastRain"
+TYPE_LEAFWETNESS1 = "leafwetness1"
+TYPE_LEAFWETNESS2 = "leafwetness2"
+TYPE_LEAFWETNESS3 = "leafwetness3"
+TYPE_LEAFWETNESS4 = "leafwetness4"
+TYPE_LEAFWETNESS5 = "leafwetness5"
+TYPE_LEAFWETNESS6 = "leafwetness6"
+TYPE_LEAFWETNESS7 = "leafwetness7"
+TYPE_LEAFWETNESS8 = "leafwetness8"
 TYPE_LIGHTNING_DISTANCE = "lightning_distance"
 TYPE_LIGHTNING_PER_DAY = "lightning_day"
 TYPE_LIGHTNING_PER_HOUR = "lightning_hour"
@@ -65,10 +81,14 @@ TYPE_PM_IN_HUMIDITY = "pm_in_humidity"
 TYPE_PM_IN_TEMP = "pm_in_temp"
 TYPE_PM10_IN = "pm10_in"
 TYPE_PM10_IN_24H = "pm10_in_24h"
+TYPE_PM10_IN_24H_AQIN = "pm10_in_24h_aqin"
+TYPE_PM10_IN_AQIN = "pm10_in_aqin"
 TYPE_PM25 = "pm25"
 TYPE_PM25_24H = "pm25_24h"
 TYPE_PM25_IN = "pm25_in"
 TYPE_PM25_IN_24H = "pm25_in_24h"
+TYPE_PM25_IN_24H_AQIN = "pm25_in_24h_aqin"
+TYPE_PM25_IN_AQIN = "pm25_in_aqin"
 TYPE_SOILHUM1 = "soilhum1"
 TYPE_SOILHUM10 = "soilhum10"
 TYPE_SOILHUM2 = "soilhum2"
@@ -89,6 +109,10 @@ TYPE_SOILTEMP6F = "soiltemp6f"
 TYPE_SOILTEMP7F = "soiltemp7f"
 TYPE_SOILTEMP8F = "soiltemp8f"
 TYPE_SOILTEMP9F = "soiltemp9f"
+TYPE_SOILTENS1 = "soiltens1"
+TYPE_SOILTENS2 = "soiltens2"
+TYPE_SOILTENS3 = "soiltens3"
+TYPE_SOILTENS4 = "soiltens4"
 TYPE_SOLARRADIATION = "solarradiation"
 TYPE_SOLARRADIATION_LX = "solarradiation_lx"
 TYPE_TEMP10F = "temp10f"
@@ -118,8 +142,12 @@ TYPE_YEARLYRAININ = "yearlyrainin"
 
 SUPPORTED_SENSOR_TYPES = [
     TYPE_24HOURRAININ,
+    TYPE_AQI_PM10_IN_24H_AQIN,
+    TYPE_AQI_PM10_IN_AQIN,
     TYPE_AQI_PM25_24H,
+    TYPE_AQI_PM25_IN_24H_AQIN,
     TYPE_AQI_PM25_IN_24H,
+    TYPE_AQI_PM25_IN_AQIN,
     TYPE_AQI_PM25_IN,
     TYPE_AQI_PM25,
     TYPE_BAROMABSIN,
@@ -130,9 +158,12 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_DAILYRAININ,
     TYPE_DEWPOINT_IN,
     TYPE_DEWPOINT,
+    TYPE_ETOS,
+    TYPE_ETRS,
     TYPE_EVENTRAININ,
     TYPE_FEELSLIKE_IN,
     TYPE_FEELSLIKE,
+    TYPE_GDD,
     TYPE_HOURLYRAININ,
     TYPE_HUMIDITY,
     TYPE_HUMIDITY1,
@@ -147,6 +178,14 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_HUMIDITY9,
     TYPE_HUMIDITYIN,
     TYPE_LASTRAIN,
+    TYPE_LEAFWETNESS1,
+    TYPE_LEAFWETNESS2,
+    TYPE_LEAFWETNESS3,
+    TYPE_LEAFWETNESS4,
+    TYPE_LEAFWETNESS5,
+    TYPE_LEAFWETNESS6,
+    TYPE_LEAFWETNESS7,
+    TYPE_LEAFWETNESS8,
     TYPE_LIGHTNING_DISTANCE,
     TYPE_LIGHTNING_PER_DAY,
     TYPE_LIGHTNING_PER_HOUR,
@@ -155,10 +194,14 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_MONTHLYRAININ,
     TYPE_PM_IN_HUMIDITY,
     TYPE_PM_IN_TEMP,
+    TYPE_PM10_IN_24H_AQIN,
     TYPE_PM10_IN_24H,
+    TYPE_PM10_IN_AQIN,
     TYPE_PM10_IN,
     TYPE_PM25_24H,
+    TYPE_PM25_IN_24H_AQIN,
     TYPE_PM25_IN_24H,
+    TYPE_PM25_IN_AQIN,
     TYPE_PM25_IN,
     TYPE_PM25,
     TYPE_SOILHUM1,
@@ -181,6 +224,10 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_SOILTEMP7F,
     TYPE_SOILTEMP8F,
     TYPE_SOILTEMP9F,
+    TYPE_SOILTENS1,
+    TYPE_SOILTENS2,
+    TYPE_SOILTENS3,
+    TYPE_SOILTENS4,
     TYPE_SOLARRADIATION_LX,
     TYPE_SOLARRADIATION,
     TYPE_TEMP10F,
@@ -232,6 +279,20 @@ SENSOR_DESCRIPTIONS = (
         state_class=SensorStateClass.TOTAL_INCREASING,
     ),
     SensorEntityDescription(
+        key=TYPE_AQI_PM10_IN_AQIN,
+        name="AQI PM10 Indoor (AQIN Sensor)",
+        device_class=SensorDeviceClass.AQI,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_AQI_PM10_IN_24H_AQIN,
+        name="AQI PM10 Indoor 24h Avg (AQIN Sensor)",
+        device_class=SensorDeviceClass.AQI,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
         key=TYPE_AQI_PM25,
         name="AQI PM2.5",
         device_class=SensorDeviceClass.AQI,
@@ -242,7 +303,7 @@ SENSOR_DESCRIPTIONS = (
         key=TYPE_AQI_PM25_24H,
         name="AQI PM2.5 24h Avg",
         device_class=SensorDeviceClass.AQI,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
@@ -256,7 +317,21 @@ SENSOR_DESCRIPTIONS = (
         key=TYPE_AQI_PM25_IN_24H,
         name="AQI PM2.5 Indoor 24h Avg",
         device_class=SensorDeviceClass.AQI,
-        state_class=SensorStateClass.TOTAL_INCREASING,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_AQI_PM25_IN_AQIN,
+        name="AQI PM2.5 Indoor (AQIN Sensor)",
+        device_class=SensorDeviceClass.AQI,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_AQI_PM25_IN_24H_AQIN,
+        name="AQI PM2.5 Indoor 24h Avg (AQIN Sensor)",
+        device_class=SensorDeviceClass.AQI,
+        state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
@@ -319,6 +394,22 @@ SENSOR_DESCRIPTIONS = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
+        key=TYPE_ETOS,
+        name="Evapotranspiration Short",
+        icon="mdi:waves-arrow-up",
+        native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_DAY,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_ETRS,
+        name="Evapotranspiration Tall",
+        icon="mdi:waves-arrow-up",
+        native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_DAY,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
         key=TYPE_EVENTRAININ,
         name="Event Rain",
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
@@ -338,6 +429,14 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=TYPE_GDD,
+        name="Growing Degree Days",
+        icon="mdi:sprout",
+        native_unit_of_measurement=UnitOfTime.DAYS,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HOURLYRAININ,
@@ -448,6 +547,78 @@ SENSOR_DESCRIPTIONS = (
         device_class=SensorDeviceClass.TIMESTAMP,
     ),
     SensorEntityDescription(
+        key=TYPE_LEAFWETNESS1,
+        name="Leaf Wetness 1",
+        icon="mdi:leaf",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.MOISTURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_LEAFWETNESS2,
+        name="Leaf Wetness 2",
+        icon="mdi:leaf",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.MOISTURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_LEAFWETNESS3,
+        name="Leaf Wetness 3",
+        icon="mdi:leaf",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.MOISTURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_LEAFWETNESS4,
+        name="Leaf Wetness 4",
+        icon="mdi:leaf",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.MOISTURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_LEAFWETNESS5,
+        name="Leaf Wetness 5",
+        icon="mdi:leaf",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.MOISTURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_LEAFWETNESS6,
+        name="Leaf Wetness 6",
+        icon="mdi:leaf",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.MOISTURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_LEAFWETNESS7,
+        name="Leaf Wetness 7",
+        icon="mdi:leaf",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.MOISTURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_LEAFWETNESS8,
+        name="Leaf Wetness 8",
+        icon="mdi:leaf",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=SensorDeviceClass.MOISTURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
         key=TYPE_LIGHTNING_DISTANCE,
         name="Lightning Strike Distance",
         icon="mdi:lightning-bolt",
@@ -525,6 +696,22 @@ SENSOR_DESCRIPTIONS = (
         entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
+        key=TYPE_PM10_IN_AQIN,
+        name="PM10 Indoor (AQIN Sensor)",
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        device_class=SensorDeviceClass.PM10,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_PM10_IN_24H_AQIN,
+        name="PM10 Indoor 24h Avg (AQIN Sensor)",
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        device_class=SensorDeviceClass.PM10,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
         key=TYPE_PM25_24H,
         name="PM25 24h Avg",
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
@@ -543,6 +730,22 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_PM25_IN_24H,
         name="PM25 Indoor 24h Avg",
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        device_class=SensorDeviceClass.PM25,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_PM25_IN_AQIN,
+        name="PM25 Indoor (AQIN Sensor)",
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        device_class=SensorDeviceClass.PM25,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_PM25_IN_24H_AQIN,
+        name="PM25 Indoor 24h Avg (AQIN Sensor)",
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
@@ -713,6 +916,38 @@ SENSOR_DESCRIPTIONS = (
         name="Soil Temp 9",
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_SOILTENS1,
+        name="Soil Tension 1",
+        native_unit_of_measurement=UnitOfPressure.CBAR,
+        device_class=SensorDeviceClass.PRESSURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_SOILTENS2,
+        name="Soil Tension 2",
+        native_unit_of_measurement=UnitOfPressure.CBAR,
+        device_class=SensorDeviceClass.PRESSURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_SOILTENS3,
+        name="Soil Tension 3",
+        native_unit_of_measurement=UnitOfPressure.CBAR,
+        device_class=SensorDeviceClass.PRESSURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+    ),
+    SensorEntityDescription(
+        key=TYPE_SOILTENS4,
+        name="Soil Tension 4",
+        native_unit_of_measurement=UnitOfPressure.CBAR,
+        device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
         entity_registry_enabled_default=False,
     ),

@@ -19,6 +19,17 @@ and this project adheres to [Semantic Versioning].
   - PM Indoor Temp
   - PM10 Indoor
   - PM10 Indoor 24h Avg
+- New sensors based on new information at
+  https://github.com/ambient-weather/api-docs/wiki/Device-Data-Specs#data-timing
+  - Leaf Wetness 1-8
+  - Soil Tension 1-4
+  - Evapotranspiration Short
+  - Evapotranspiration Tall
+  - Growing Degree Days
+  - PM2.5 Indoor AQIN
+  - PM10 Indoor AQIN
+  - AQI from PM2.5 Indoor AQIN
+  - AQI from PM10 Indoor AQIN
 - New calculated sensors based on new information at
   https://github.com/ambient-weather/api-docs/wiki/Device-Data-Specs#data-timing
   - Dew Point Indoor
@@ -32,6 +43,7 @@ and this project adheres to [Semantic Versioning].
 
 - New entity name format (thanks @mkmer!)
 - Updated default sensor names for case consistency
+- Average values now MEASUREMENT instead of TOTAL_INCREASING
 
 ### Housekeeping
 
