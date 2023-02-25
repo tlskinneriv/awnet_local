@@ -25,9 +25,12 @@ from .const import (
     DOMAIN,
 )
 
-from .const_types import (
-    SUPPORTED_SENSOR_TYPES,
+from .const_binary_sensor import (
     SUPPORTED_BINARY_SENSOR_TYPES,
+)
+
+from .const_sensor import (
+    SUPPORTED_SENSOR_TYPES,
     CALCULATED_SENSOR_TYPES,
 )
 
@@ -39,10 +42,9 @@ MAC_REGEX = r"^(?:[a-f0-9]{2}:){5}[a-f0-9]{2}$"
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-
+    """Setup the integration based on configuration data. Register the service."""
     if not entry.unique_id:
-        hass.config_entries.async_update_entry(
-            entry, unique_id=entry.data[CONF_MAC])
+        hass.config_entries.async_update_entry(entry, unique_id=entry.data[CONF_MAC])
 
     ambient = AmbientStation(hass, entry)
 
@@ -60,7 +62,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         if mac:
             if not re.search(MAC_REGEX, mac):
                 _LOGGER.error(
-                    "MAC address not in correct format. Parsed MAC: %s. Expected formats: 000000000000, 00:00:00:00:00:00, 00-00-00-00-00-00 or 0000.0000.0000",
+                    "MAC address not in correct format. Parsed MAC: %s. "
+                    "Expected formats: 000000000000, 00:00:00:00:00:00, 00-00-00-00-00-00 or "
+                    "0000.0000.0000",
                     mac,
                 )
                 return
@@ -71,8 +75,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             _LOGGER.warning("Data received for %s that is not our MAC", mac)
             return
         _LOGGER.debug(
-            "Last data: %s", hass.data[DOMAIN][entry.entry_id].stations.get(
-                mac, None)
+            "Last data: %s", hass.data[DOMAIN][entry.entry_id].stations.get(mac, None)
         )
         hass.data[DOMAIN][entry.entry_id].on_data(mac, call.data)
 
@@ -100,6 +103,8 @@ class AmbientStation:
         self.add_station(entry.data[CONF_MAC], entry.data[CONF_NAME])
 
     def add_station(self, mac: str, name: str) -> None:
+        """Add a station to the list of stations in the integration data; currently the integration
+        only supports 1 as configured from the UI."""
         if mac not in self.stations:
             self.stations.setdefault(mac, {})
             self.stations[mac][ATTR_NAME] = name
@@ -107,11 +112,11 @@ class AmbientStation:
             for attr_type in SUPPORTED_SENSOR_TYPES + SUPPORTED_BINARY_SENSOR_TYPES:
                 self.stations[mac][ATTR_LAST_DATA][attr_type] = None
             if not self._entry_setup_complete:
-                self._hass.config_entries.async_setup_platforms(
-                    self._entry, PLATFORMS)
+                self._hass.config_entries.async_setup_platforms(self._entry, PLATFORMS)
                 self._entry_setup_complete = True
 
     def on_data(self, mac: str, data: dict) -> None:
+        """Processes the data from the incoming service call to update the sensors."""
         _LOGGER.info("Processing data")
         _LOGGER.info("MAC address: %s", mac)
         _LOGGER.debug("New data received: %s", data)
@@ -146,8 +151,8 @@ class AmbientWeatherEntity(Entity):
             manufacturer="Ambient Weather",
             name=station_name,
         )
-
-        self._attr_name = f"{station_name} {description.name}"
+        self._attr_has_entity_name = True
+        self._attr_name = f"{description.name}"
         self._attr_unique_id = f"{mac_address}_{description.key}"
         self._mac_address = mac_address
         self._attr_available = False

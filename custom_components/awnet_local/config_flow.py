@@ -1,3 +1,12 @@
+"""Configuration Flow
+
+Handle the UI-based configuration of the integration.
+
+The integration requires the following:
+- Name: a friendly name for the device
+- MAC: the MAC address of the device (take multiple formats supported by the format_mac method)
+"""
+
 from typing import Dict
 import logging
 import voluptuous as vol
@@ -6,23 +15,18 @@ from homeassistant import config_entries
 from homeassistant.helpers.device_registry import format_mac
 import homeassistant.helpers.config_validation as cv
 
-from .const import (
-    DOMAIN,
-    CONF_MAC,
-    CONF_NAME
-)
+from .const import DOMAIN, CONF_MAC, CONF_NAME
 
 _LOGGER = logging.getLogger(__name__)
 
 CONFIG_SCHEMA = vol.Schema(
-    {
-        vol.Required(CONF_NAME): cv.string,
-        vol.Required(CONF_MAC): cv.string
-    }
+    {vol.Required(CONF_NAME): cv.string, vol.Required(CONF_MAC): cv.string}
 )
+
 
 class AWNConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """AWNET Config Flow"""
+
     VERSION = 1
 
     async def async_step_user(self, user_input=None):
@@ -34,16 +38,10 @@ class AWNConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             mac = format_mac(user_input[CONF_MAC])
 
             await self.async_set_unique_id(mac)
-            self._abort_if_unique_id_configured(
-                updates={CONF_MAC: mac}
-            )
+            self._abort_if_unique_id_configured(updates={CONF_MAC: mac})
 
             return self.async_create_entry(
-                title=f'{name} - {mac}',
-                data={
-                    CONF_NAME: name,
-                    CONF_MAC: mac
-                }
+                title=f"{name} - {mac}", data={CONF_NAME: name, CONF_MAC: mac}
             )
 
         return self.async_show_form(

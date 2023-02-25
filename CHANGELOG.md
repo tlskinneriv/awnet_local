@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [0.4.0] - 2023-02-25
+
+### Added
+
+- Minimum Home Assistant version (currently 2023.1.0) for unit compatibility
+- New sensors based on the information at https://ambientweather.com/faqs/question/view/id/1857/
+  - CO2 Indoor
+  - CO2 Indoor 24h Avg
+  - Lightning Strike Distance
+  - Lightning Strike Timestamp
+  - PM Indoor Humidity
+  - PM Indoor Temp
+  - PM10 Indoor
+  - PM10 Indoor 24h Avg
+- New sensors based on new information at
+  https://github.com/ambient-weather/api-docs/wiki/Device-Data-Specs#data-timing
+  - Leaf Wetness 1-8
+  - Soil Tension 1-4
+  - Evapotranspiration Short
+  - Evapotranspiration Tall
+  - Growing Degree Days
+  - PM2.5 Indoor AQIN
+  - PM10 Indoor AQIN
+  - AQI from PM2.5 Indoor AQIN
+  - AQI from PM10 Indoor AQIN
+- New calculated sensors based on new information at
+  https://github.com/ambient-weather/api-docs/wiki/Device-Data-Specs#data-timing
+  - Dew Point Indoor
+  - Feels Like Indoor
+- New binary sensors based on the information at
+  https://ambientweather.com/faqs/question/view/id/1857/
+  - Rain Guage Battery
+  - Relay 1-10 Battery
+
+### Changed
+
+- New entity name format (thanks @mkmer!)
+- Updated default sensor names for case consistency
+- Average values now MEASUREMENT instead of TOTAL_INCREASING
+
+### Housekeeping
+
+- Updated dev environment
+- Bump to Python 3.10 for devcontainer
+- Adopt black as formatter for Python code
+- Add missing inline documentation
+- Break sensor and binary_sensor constants into separate files
+
 ## [0.3.0] - 2023-01-06
 
 ### Added
@@ -102,7 +150,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/tlskinneriv/awnet_local/compare/v0..0...HEAD
+[unreleased]: https://github.com/tlskinneriv/awnet_local/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/tlskinneriv/awnet_local/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/tlskinneriv/awnet_local/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/tlskinneriv/awnet_local/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/tlskinneriv/awnet_local/compare/v0.2.0...v0.2.1

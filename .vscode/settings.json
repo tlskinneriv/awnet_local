@@ -6,5 +6,7 @@
   },
   "editor.rulers": [100],
   "rewrap.autoWrap.enabled": true,
-  "rewrap.wrappingColumn": 100
+  "rewrap.wrappingColumn": 100,
+  "python.formatting.provider": "black",
+  "cSpell.words": ["awnet", "hass", "homeassistant"]
 }
