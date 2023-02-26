@@ -2,9 +2,5 @@
     "name": "Ambient Weather Station - Local",
     "content_in_root": false,
     "render_readme": true,
-    "domains": [
-        "sensor",
-        "binary_sensor"
-    ],
     "homeassistant": "2023.1.0"
 }
