@@ -18,7 +18,6 @@ from homeassistant.helpers.dispatcher import (
 from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.storage import Store
-from homeassistant.helpers.typing import StateType
 
 from .const import (
     ATTR_LAST_DATA,
@@ -230,7 +229,6 @@ class AmbientWeatherEntity(RestoreEntity):
         self._attr_name = f"{description.name}"
         self._attr_unique_id = f"{ambient.station[ATTR_MAC]}_{description.key}"
         self._attr_available = False
-        self._attr_state = None
         self.entity_description = description
 
     async def async_added_to_hass(self) -> None:
