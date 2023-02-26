@@ -1,7 +1,12 @@
 {
   "title": "Ambient Weather Local",
   "config": {
-    "error": {},
+    "abort": {
+      "already_configured": "An entry for this MAC address has already been configured. Delete the previous entry if reconfiguration is needed."
+    },
+    "error": {
+      "station_mac_regex_error": "MAC address is not in an accepted format."
+    },
     "step": {
       "user": {
         "data": {

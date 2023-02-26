@@ -270,6 +270,9 @@ CALCULATED_SENSOR_TYPES = {
 # Each sensor listed here is converted server-side from the native unit to the unit that HA supports
 CONVERTED_SENSOR_TYPES = [TYPE_LIGHTNING_TIME]
 
+# Each sensor listed here should be restored on a restart of HA since it is a timestamp type sensor
+RESTORE_SENSOR_TYPES = [TYPE_LIGHTNING_TIME, TYPE_LASTRAIN]
+
 SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_24HOURRAININ,
@@ -283,56 +286,48 @@ SENSOR_DESCRIPTIONS = (
         name="AQI PM10 Indoor (AQIN Sensor)",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_AQI_PM10_IN_24H_AQIN,
         name="AQI PM10 Indoor 24h Avg (AQIN Sensor)",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_AQI_PM25,
         name="AQI PM2.5",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_AQI_PM25_24H,
         name="AQI PM2.5 24h Avg",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_AQI_PM25_IN,
         name="AQI PM2.5 Indoor",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_AQI_PM25_IN_24H,
         name="AQI PM2.5 Indoor 24h Avg",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_AQI_PM25_IN_AQIN,
         name="AQI PM2.5 Indoor (AQIN Sensor)",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_AQI_PM25_IN_24H_AQIN,
         name="AQI PM2.5 Indoor 24h Avg (AQIN Sensor)",
         device_class=SensorDeviceClass.AQI,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_BAROMABSIN,
@@ -354,7 +349,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
         device_class=SensorDeviceClass.CO2,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_CO2_IN,
@@ -362,7 +356,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
         device_class=SensorDeviceClass.CO2,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_CO2_IN_24H,
@@ -370,7 +363,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
         device_class=SensorDeviceClass.CO2,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_DAILYRAININ,
@@ -399,7 +391,6 @@ SENSOR_DESCRIPTIONS = (
         icon="mdi:waves-arrow-up",
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_DAY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_ETRS,
@@ -407,7 +398,6 @@ SENSOR_DESCRIPTIONS = (
         icon="mdi:waves-arrow-up",
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_DAY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_EVENTRAININ,
@@ -436,7 +426,6 @@ SENSOR_DESCRIPTIONS = (
         icon="mdi:sprout",
         native_unit_of_measurement=UnitOfTime.DAYS,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HOURLYRAININ,
@@ -451,7 +440,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY1,
@@ -459,7 +447,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY2,
@@ -467,7 +454,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY3,
@@ -475,7 +461,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY4,
@@ -483,7 +468,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY5,
@@ -491,7 +475,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY6,
@@ -499,7 +482,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY7,
@@ -507,7 +489,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY8,
@@ -515,7 +496,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY9,
@@ -523,7 +503,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_HUMIDITY,
@@ -538,7 +517,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LASTRAIN,
@@ -553,7 +531,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.MOISTURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LEAFWETNESS2,
@@ -562,7 +539,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.MOISTURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LEAFWETNESS3,
@@ -571,7 +547,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.MOISTURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LEAFWETNESS4,
@@ -580,7 +555,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.MOISTURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LEAFWETNESS5,
@@ -589,7 +563,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.MOISTURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LEAFWETNESS6,
@@ -598,7 +571,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.MOISTURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LEAFWETNESS7,
@@ -607,7 +579,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.MOISTURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LEAFWETNESS8,
@@ -616,7 +587,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.MOISTURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LIGHTNING_DISTANCE,
@@ -624,7 +594,6 @@ SENSOR_DESCRIPTIONS = (
         icon="mdi:lightning-bolt",
         native_unit_of_measurement=UnitOfLength.KILOMETERS,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LIGHTNING_PER_DAY,
@@ -632,7 +601,6 @@ SENSOR_DESCRIPTIONS = (
         icon="mdi:lightning-bolt",
         native_unit_of_measurement="strikes",
         state_class=SensorStateClass.TOTAL,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LIGHTNING_PER_HOUR,
@@ -640,14 +608,12 @@ SENSOR_DESCRIPTIONS = (
         icon="mdi:lightning-bolt",
         native_unit_of_measurement="strikes",
         state_class=SensorStateClass.TOTAL,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_LIGHTNING_TIME,
-        name="Lightning Strike Timestamp",
+        name="Last Lightning Strike",
         icon="mdi:lightning-bolt",
         device_class=SensorDeviceClass.TIMESTAMP,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_MAXDAILYGUST,
@@ -669,7 +635,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM_IN_TEMP,
@@ -677,7 +642,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM10_IN,
@@ -685,7 +649,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM10,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM10_IN_24H,
@@ -693,7 +656,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM10,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM10_IN_AQIN,
@@ -701,7 +663,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM10,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM10_IN_24H_AQIN,
@@ -709,7 +670,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM10,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_24H,
@@ -717,7 +677,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_IN,
@@ -725,7 +684,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_IN_24H,
@@ -733,7 +691,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_IN_AQIN,
@@ -741,7 +698,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_IN_24H_AQIN,
@@ -749,7 +705,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_PM25,
@@ -757,7 +712,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILHUM10,
@@ -765,7 +719,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILHUM1,
@@ -773,7 +726,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILHUM2,
@@ -781,7 +733,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILHUM3,
@@ -789,7 +740,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILHUM4,
@@ -797,7 +747,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILHUM5,
@@ -805,7 +754,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILHUM6,
@@ -813,7 +761,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILHUM7,
@@ -821,7 +768,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILHUM8,
@@ -829,7 +775,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILHUM9,
@@ -837,7 +782,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.HUMIDITY,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTEMP10F,
@@ -845,7 +789,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTEMP1F,
@@ -853,7 +796,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTEMP2F,
@@ -861,7 +803,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTEMP3F,
@@ -869,7 +810,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTEMP4F,
@@ -877,7 +817,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTEMP5F,
@@ -885,7 +824,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTEMP6F,
@@ -893,7 +831,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTEMP7F,
@@ -901,7 +838,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTEMP8F,
@@ -909,7 +845,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTEMP9F,
@@ -917,7 +852,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTENS1,
@@ -925,7 +859,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfPressure.CBAR,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTENS2,
@@ -933,7 +866,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfPressure.CBAR,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTENS3,
@@ -941,7 +873,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfPressure.CBAR,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOILTENS4,
@@ -949,7 +880,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfPressure.CBAR,
         device_class=SensorDeviceClass.PRESSURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_SOLARRADIATION,
@@ -971,7 +901,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_TEMP1F,
@@ -979,7 +908,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_TEMP2F,
@@ -987,7 +915,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_TEMP3F,
@@ -995,7 +922,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_TEMP4F,
@@ -1003,7 +929,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_TEMP5F,
@@ -1011,7 +936,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_TEMP6F,
@@ -1019,7 +943,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_TEMP7F,
@@ -1027,7 +950,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_TEMP8F,
@@ -1035,7 +957,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_TEMP9F,
@@ -1043,7 +964,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_TEMPF,
@@ -1093,7 +1013,6 @@ SENSOR_DESCRIPTIONS = (
         icon="mdi:weather-windy",
         native_unit_of_measurement=DEGREE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_WINDDIR_AVG2M,
@@ -1101,7 +1020,6 @@ SENSOR_DESCRIPTIONS = (
         icon="mdi:weather-windy",
         native_unit_of_measurement=DEGREE,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_WINDGUSTDIR,
@@ -1123,7 +1041,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_WINDSPDMPH_AVG2M,
@@ -1131,7 +1048,6 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfSpeed.MILES_PER_HOUR,
         device_class=SensorDeviceClass.WIND_SPEED,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key=TYPE_WINDSPEEDMPH,

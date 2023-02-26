@@ -136,7 +136,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT2,
@@ -144,7 +143,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT3,
@@ -152,7 +150,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT4,
@@ -160,7 +157,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT5,
@@ -168,7 +164,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT6,
@@ -176,7 +171,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT7,
@@ -184,7 +178,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT8,
@@ -192,7 +185,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT9,
@@ -200,7 +192,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTIN,
@@ -215,7 +206,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_LEAK1,
@@ -223,7 +213,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_LEAK2,
@@ -231,7 +220,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_LEAK3,
@@ -239,7 +227,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_LEAK4,
@@ -247,7 +234,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_SM1,
@@ -255,7 +241,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_SM2,
@@ -263,7 +248,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_SM3,
@@ -271,7 +255,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_SM4,
@@ -279,7 +262,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_SM5,
@@ -287,7 +269,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_SM6,
@@ -295,7 +276,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_SM7,
@@ -303,7 +283,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_SM8,
@@ -311,7 +290,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_SM9,
@@ -319,7 +297,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_SM10,
@@ -327,7 +304,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_CO2,
@@ -335,7 +311,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATT_LIGHTNING,
@@ -343,35 +318,30 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_LEAK1,
         name="Leak Detector 1",
         device_class=BinarySensorDeviceClass.MOISTURE,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_LEAK2,
         name="Leak Detector 2",
         device_class=BinarySensorDeviceClass.MOISTURE,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_LEAK3,
         name="Leak Detector 3",
         device_class=BinarySensorDeviceClass.MOISTURE,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_LEAK4,
         name="Leak Detector 4",
         device_class=BinarySensorDeviceClass.MOISTURE,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_PM25IN_BATT,
@@ -379,7 +349,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_PM25_BATT,
@@ -387,7 +356,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_RELAY1,
@@ -395,7 +363,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_RELAY2,
@@ -403,7 +370,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_RELAY3,
@@ -411,7 +377,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_RELAY4,
@@ -419,7 +384,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_RELAY5,
@@ -427,7 +391,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_RELAY6,
@@ -435,7 +398,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_RELAY7,
@@ -443,7 +405,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_RELAY8,
@@ -451,7 +412,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_RELAY9,
@@ -459,7 +419,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_RELAY10,
@@ -467,7 +426,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=1,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTRAIN,
@@ -475,7 +433,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTR1,
@@ -483,7 +440,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTR2,
@@ -491,7 +447,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTR3,
@@ -499,7 +454,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTR4,
@@ -507,7 +461,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTR5,
@@ -515,7 +468,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTR6,
@@ -523,7 +475,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTR7,
@@ -531,7 +482,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTR8,
@@ -539,7 +489,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTR9,
@@ -547,7 +496,6 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
     AmbientBinarySensorDescription(
         key=TYPE_BATTR10,
@@ -555,6 +503,5 @@ BINARY_SENSOR_DESCRIPTIONS = (
         device_class=BinarySensorDeviceClass.BATTERY,
         entity_category=EntityCategory.DIAGNOSTIC,
         on_state=0,
-        entity_registry_enabled_default=False,
     ),
 )
