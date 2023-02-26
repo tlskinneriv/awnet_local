@@ -15,7 +15,10 @@ from homeassistant.helpers.dispatcher import (
     async_dispatcher_connect,
     async_dispatcher_send,
 )
-from homeassistant.helpers.entity import DeviceInfo, Entity, EntityDescription
+from homeassistant.helpers.entity import DeviceInfo, EntityDescription
+from homeassistant.helpers.restore_state import RestoreEntity
+from homeassistant.helpers.storage import Store
+from homeassistant.helpers.typing import StateType
 
 from .const import (
     ATTR_LAST_DATA,
@@ -42,6 +45,8 @@ from .const_sensor import (
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
+STORAGE_KEY = DOMAIN + "_data"
+STORAGE_VERSION = 1
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -99,12 +104,20 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.services.async_register(DOMAIN, "update", async_handle_update)
 
+    await ambient.async_load()
+
+    if not ambient._entry_setup_complete:
+        hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+        ambient._entry_setup_complete = True
+
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload an Ambient PWS config entry."""
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if unload_ok:
+        await hass.data[DOMAIN][entry.entry_id].async_unload()
     return unload_ok
 
 
@@ -124,9 +137,20 @@ class AmbientStation:
         self.station.setdefault(ATTR_KNOWN_SENSORS, [])
         self.station[ATTR_SENSOR_UPDATE_IN_PROGRESS] = False
         self.station[ATTR_STATIONTYPE] = ""
-        if not self._entry_setup_complete:
-            self._hass.config_entries.async_setup_platforms(self._entry, PLATFORMS)
-            self._entry_setup_complete = True
+        self._storage_key = STORAGE_KEY + self.station[ATTR_MAC]
+        self._store: Store = Store(hass, STORAGE_VERSION, self._storage_key)
+
+    async def async_load(self) -> None:
+        """Load data for station from datastore"""
+        _LOGGER.info("Loading data for known sensors")
+        if (data := await self._store.async_load()) is not None:
+            _LOGGER.info("Data being restored: %s", data)
+            self.station[ATTR_KNOWN_SENSORS] = data
+
+    async def async_unload(self) -> None:
+        """Remove all data for the station from the datastore"""
+        _LOGGER.info("Removing data for known sensors")
+        await self._store.async_remove()
 
     async def async_on_data(self, mac: str, data: dict) -> None:
         """Processes the data from the incoming service call to update the sensors."""
@@ -151,28 +175,31 @@ class AmbientStation:
             if all(x in list(extracted_data.keys()) for x in value)
         ]
         _LOGGER.debug("Known calc'd sensor types: %s", known_calc_sensors)
-        known_sensors = list(
-            set(
-                self.station[ATTR_KNOWN_SENSORS]
-                + known_calc_sensors
-                + list(extracted_data.keys())
-            )
+        known_sensors_set = set(
+            self.station[ATTR_KNOWN_SENSORS]
+            + known_calc_sensors
+            + list(extracted_data.keys())
+        )
+        new_sensors = list(
+            known_sensors_set.difference(set(self.station[ATTR_KNOWN_SENSORS]))
         )
 
-        _LOGGER.debug("Previously known sensors: %s", self.station[ATTR_KNOWN_SENSORS])
-        _LOGGER.debug("Now known sensors: %s", known_sensors)
-        if known_sensors != self.station[ATTR_KNOWN_SENSORS]:
-            self.station[ATTR_KNOWN_SENSORS] = known_sensors
+        _LOGGER.debug("New sensors to add: %s", new_sensors)
+        if new_sensors:
+            self.station[ATTR_KNOWN_SENSORS] = list(known_sensors_set)
             await self._hass.config_entries.async_unload_platforms(
                 self._entry, PLATFORMS
             )
             await self._hass.config_entries.async_forward_entry_setups(
                 self._entry, PLATFORMS
             )
+
+        # Store the data off
+        await self._store.async_save(self.station[ATTR_KNOWN_SENSORS])
         async_dispatcher_send(self._hass, f"{DOMAIN}_data_update_{mac}")
 
 
-class AmbientWeatherEntity(Entity):
+class AmbientWeatherEntity(RestoreEntity):
     """Define a base Ambient PWS entity."""
 
     _attr_should_poll = False
@@ -195,43 +222,54 @@ class AmbientWeatherEntity(Entity):
         self._attr_has_entity_name = True
         self._attr_name = f"{description.name}"
         self._attr_unique_id = f"{ambient.station[ATTR_MAC]}_{description.key}"
-        self._attr_available = False
+        self._attr_available = True
+        self._attr_state = None
         self.entity_description = description
+
+    @property
+    def state(self) -> StateType:
+        """Return the state of the entity."""
+        return self._attr_state
 
     async def async_added_to_hass(self) -> None:
         """Register callbacks."""
 
-        @callback
-        def update() -> None:
-            """Update the state."""
-            last_data = self._ambient.station[ATTR_LAST_DATA]
+        state = await self.async_get_last_state()
+        _LOGGER.info("State for %s was %s", self._attr_name, state.state)
+        if not state:
+            return
+        self._attr_state = state.state
 
-            if self.entity_description.key in CALCULATED_SENSOR_TYPES:
-                # if we are a calculated sensor type, report available only if all our dependencies
-                # are available
-                self._attr_available = all(
-                    last_data.get(x) is not None
-                    for x in CALCULATED_SENSOR_TYPES[self.entity_description.key]
-                )
-            else:
-                self._attr_available = (
-                    last_data.get(self.entity_description.key) is not None
-                )
+        _LOGGER.info("_attr_state for %s is %s", self._attr_name, self._attr_state)
+        _LOGGER.info("state for %s is %s", self._attr_name, self.state)
 
-            self.update_from_latest_data()
-            self.async_write_ha_state()
-
-        self.async_on_remove(
-            async_dispatcher_connect(
-                self.hass,
-                f"{DOMAIN}_data_update_{self._ambient.station[ATTR_MAC]}",
-                update,
-            )
+        async_dispatcher_connect(
+            self.hass,
+            f"{DOMAIN}_data_update_{self._ambient.station[ATTR_MAC]}",
+            self.update,
         )
-
-        self.update_from_latest_data()
 
     @callback
     def update_from_latest_data(self) -> None:
         """Update the entity from the latest data."""
         raise NotImplementedError
+
+    @callback
+    def update(self) -> None:
+        """Update the state."""
+        last_data = self._ambient.station[ATTR_LAST_DATA]
+
+        if self.entity_description.key in CALCULATED_SENSOR_TYPES:
+            # if we are a calculated sensor type, report available only if all our dependencies
+            # are available
+            self._attr_available = all(
+                last_data.get(x) is not None
+                for x in CALCULATED_SENSOR_TYPES[self.entity_description.key]
+            )
+        else:
+            self._attr_available = (
+                last_data.get(self.entity_description.key) is not None
+            )
+
+        self.update_from_latest_data()
+        self.async_write_ha_state()

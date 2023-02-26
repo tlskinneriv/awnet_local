@@ -9,8 +9,8 @@ The integration requires the following:
 
 from typing import Dict, Any
 import logging
-import voluptuous as vol
 import re
+import voluptuous as vol
 
 from homeassistant import config_entries
 from homeassistant.helpers.device_registry import format_mac
