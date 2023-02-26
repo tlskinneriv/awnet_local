@@ -137,8 +137,14 @@ class AmbientStation:
         self.station.setdefault(ATTR_KNOWN_SENSORS, [])
         self.station[ATTR_SENSOR_UPDATE_IN_PROGRESS] = False
         self.station[ATTR_STATIONTYPE] = ""
-        self._storage_key = STORAGE_KEY + self.station[ATTR_MAC]
+        self._storage_key = f"{STORAGE_KEY}_{self.station[ATTR_MAC]}"
         self._store: Store = Store(hass, STORAGE_VERSION, self._storage_key)
+        self._update_event_handle = f"{DOMAIN}_data_update_{self.station[ATTR_MAC]}"
+
+    @property
+    def update_event_handle(self) -> str:
+        """Returns the update event handle for the instance"""
+        return self._update_event_handle
 
     async def async_load(self) -> None:
         """Load data for station from datastore"""
@@ -167,6 +173,7 @@ class AmbientStation:
             extracted_data == self.station[ATTR_LAST_DATA]
             and not self.station[ATTR_SENSOR_UPDATE_IN_PROGRESS]
         ):
+            _LOGGER.info("Data received is the same as last received, not updating")
             return
         self.station[ATTR_LAST_DATA] = extracted_data
         known_calc_sensors = [
@@ -196,7 +203,7 @@ class AmbientStation:
 
         # Store the data off
         await self._store.async_save(self.station[ATTR_KNOWN_SENSORS])
-        async_dispatcher_send(self._hass, f"{DOMAIN}_data_update_{mac}")
+        async_dispatcher_send(self._hass, self.update_event_handle)
 
 
 class AmbientWeatherEntity(RestoreEntity):
@@ -231,7 +238,7 @@ class AmbientWeatherEntity(RestoreEntity):
 
         async_dispatcher_connect(
             self.hass,
-            f"{DOMAIN}_data_update_{self._ambient.station[ATTR_MAC]}",
+            self._ambient.update_event_handle,
             self.update,
         )
 
