@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.0.0] - 2023-02-26
+
+### Added
+
+- Sensor auto-population: when the integration is set up for the first time, it will no longer
+  populate every possible sensor. Rather, it will wait for the first data update from the add-on (or
+  alternative method) to populate sensors at that time. If sensors are added to the WS in the
+  future, they will be added automatically
+- Timestamp sensor (Last Rain, Last Lightning) persistence across reboots of HA
+- Config Flow validation to prevent bad MACs from being entered
+- Multiple weather station configuration: if another weather station needs to be added, just need to
+  add the integration again for the new MAC; the service is now aware of other config entries
+- Error text in config flow
+
+### Changed
+
+- All sensors are now enabled by default. This does not effect current installations, but is good
+  for new installation to show all available sensors and allow the use to choose what to hide
+- Known sensors persist over a restart of HA or reload of the integration
+- Calculated fields now show unknown instead of unavailable when their dependent sensors are not
+  available
+- Firmware version shown on the device page: right now this only seems to show up on new instances
+  of the integration
+- Rename of "Lightning Strike Timestamp" to "Last Lightning Strike"
+
+### Housekeeping
+
+- Lots of code refactoring
+
 ## [0.4.0] - 2023-02-25
 
 ### Added

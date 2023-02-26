@@ -1,3 +1,5 @@
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
+
 # Ambient Weather Station - Local
 
 ## Overview
@@ -16,13 +18,3 @@ Configuration is performed via the Home Assistant user interface. You will need 
 - MAC: the MAC address for the device
 
 Once configured, setup the accompanying add-on [AWNET](https://github.com/tlskinneriv/hassio-addons/tree/master/awnet) (see the [docs](https://github.com/tlskinneriv/hassio-addons/blob/master/awnet/DOCS.md) for direct instructions).
-
-## Known Issues
-
-Currently, there is not a method implemented to determine what sensors a weather station supports.
-Therefore, all possible supported sensors are populated for the integration (this list was
-originally pulled from the [cloud-based
-integration](https://github.com/home-assistant/core/tree/dev/homeassistant/components/ambient_station)).
-The sensors will populate as "Unavailable" until a value is received from the add-on. Sensors not
-populated by the device will remain in the "Unavailable" state. Recommendation is to disable the
-unsupported sensors until such a method is implemented. Many uncommon sensors are disabled by default.

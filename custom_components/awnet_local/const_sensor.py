@@ -611,7 +611,7 @@ SENSOR_DESCRIPTIONS = (
     ),
     SensorEntityDescription(
         key=TYPE_LIGHTNING_TIME,
-        name="Lightning Strike Timestamp",
+        name="Last Lightning Strike",
         icon="mdi:lightning-bolt",
         device_class=SensorDeviceClass.TIMESTAMP,
     ),
