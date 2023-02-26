@@ -145,9 +145,20 @@ class AmbientStation:
         ):
             return
         self.station[ATTR_LAST_DATA] = extracted_data
+        known_calc_sensors = [
+            key
+            for key, value in CALCULATED_SENSOR_TYPES.items()
+            if all(x in list(extracted_data.keys()) for x in value)
+        ]
+        _LOGGER.debug("Known calc'd sensor types: %s", known_calc_sensors)
         known_sensors = list(
-            set(self.station[ATTR_KNOWN_SENSORS] + list(extracted_data.keys()))
+            set(
+                self.station[ATTR_KNOWN_SENSORS]
+                + known_calc_sensors
+                + list(extracted_data.keys())
+            )
         )
+
         _LOGGER.debug("Previously known sensors: %s", self.station[ATTR_KNOWN_SENSORS])
         _LOGGER.debug("Now known sensors: %s", known_sensors)
         if known_sensors != self.station[ATTR_KNOWN_SENSORS]:
