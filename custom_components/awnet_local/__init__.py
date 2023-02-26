@@ -72,13 +72,28 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         else:
             _LOGGER.error("MAC address not found in data. Raw data: %s", data)
             return
+
+        real_entry = entry
         if mac not in hass.data[DOMAIN][entry.entry_id].stations:
-            _LOGGER.warning("Data received for %s that is not our MAC", mac)
-            return
-        _LOGGER.debug(
-            "Last data: %s", hass.data[DOMAIN][entry.entry_id].stations.get(mac, None)
+            _LOGGER.debug(
+                "Data received for %s that is not this entry's MAC. Try to find the other entry.",
+                mac,
+            )
+            config_entries = hass.config_entries.async_entries(DOMAIN)
+            config_entry_for_mac = [x for x in config_entries if x.unique_id == mac]
+            if len(config_entry_for_mac) == 0:
+                _LOGGER.warning(
+                    "Data received for %s does not belong to any config entries", mac
+                )
+                return
+            _LOGGER.debug("Found real entry for %s", mac)
+            real_entry = config_entry_for_mac[0]
+
+        _LOGGER.info(
+            "Last data: %s",
+            hass.data[DOMAIN][real_entry.entry_id].stations.get(mac, None),
         )
-        await hass.data[DOMAIN][entry.entry_id].async_on_data(mac, call.data)
+        await hass.data[DOMAIN][real_entry.entry_id].async_on_data(mac, call.data)
 
     hass.services.async_register(DOMAIN, "update", async_handle_update)
 
