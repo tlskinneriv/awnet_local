@@ -222,26 +222,12 @@ class AmbientWeatherEntity(RestoreEntity):
         self._attr_has_entity_name = True
         self._attr_name = f"{description.name}"
         self._attr_unique_id = f"{ambient.station[ATTR_MAC]}_{description.key}"
-        self._attr_available = True
+        self._attr_available = False
         self._attr_state = None
         self.entity_description = description
 
-    @property
-    def state(self) -> StateType:
-        """Return the state of the entity."""
-        return self._attr_state
-
     async def async_added_to_hass(self) -> None:
         """Register callbacks."""
-
-        state = await self.async_get_last_state()
-        _LOGGER.info("State for %s was %s", self._attr_name, state.state)
-        if not state:
-            return
-        self._attr_state = state.state
-
-        _LOGGER.info("_attr_state for %s is %s", self._attr_name, self._attr_state)
-        _LOGGER.info("state for %s is %s", self._attr_name, self.state)
 
         async_dispatcher_connect(
             self.hass,
@@ -259,17 +245,7 @@ class AmbientWeatherEntity(RestoreEntity):
         """Update the state."""
         last_data = self._ambient.station[ATTR_LAST_DATA]
 
-        if self.entity_description.key in CALCULATED_SENSOR_TYPES:
-            # if we are a calculated sensor type, report available only if all our dependencies
-            # are available
-            self._attr_available = all(
-                last_data.get(x) is not None
-                for x in CALCULATED_SENSOR_TYPES[self.entity_description.key]
-            )
-        else:
-            self._attr_available = (
-                last_data.get(self.entity_description.key) is not None
-            )
+        self._attr_available = last_data.get(self.entity_description.key) is not None
 
         self.update_from_latest_data()
         self.async_write_ha_state()

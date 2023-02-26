@@ -270,6 +270,9 @@ CALCULATED_SENSOR_TYPES = {
 # Each sensor listed here is converted server-side from the native unit to the unit that HA supports
 CONVERTED_SENSOR_TYPES = [TYPE_LIGHTNING_TIME]
 
+# Each sensor listed here should be restored on a restart of HA since it is a timestamp type sensor
+RESTORE_SENSOR_TYPES = [TYPE_LIGHTNING_TIME, TYPE_LASTRAIN]
+
 SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_24HOURRAININ,
