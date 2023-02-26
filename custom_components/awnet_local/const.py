@@ -17,6 +17,7 @@ ATTR_MAC = "MAC"
 ATTR_LAST_DATA = "last_data"
 ATTR_KNOWN_SENSORS = "known_sensors"
 ATTR_SENSOR_UPDATE_IN_PROGRESS = "sensor_update_in_progress"
+ATTR_STATIONTYPE = "station_type"
 
 # Regular Expressions
 MAC_REGEX = r"^(?:[A-Fa-f0-9]{2}[-:]?){5}[A-Fa-f0-9]{2}$|^(?:[A-Fa-f0-9]{4}\.){2}[A-Fa-f0-9]{4}$"

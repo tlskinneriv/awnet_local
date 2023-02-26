@@ -2,6 +2,7 @@
 
 import logging
 import re
+from typing import Any
 
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.config_entries import ConfigEntry
@@ -22,6 +23,7 @@ from .const import (
     ATTR_MAC,
     ATTR_KNOWN_SENSORS,
     ATTR_SENSOR_UPDATE_IN_PROGRESS,
+    ATTR_STATIONTYPE,
     CONF_MAC,
     CONF_NAME,
     DOMAIN,
@@ -74,7 +76,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             return
 
         real_entry = entry
-        if mac not in hass.data[DOMAIN][entry.entry_id].stations:
+        if mac != entry.unique_id:
             _LOGGER.debug(
                 "Data received for %s that is not this entry's MAC. Try to find the other entry.",
                 mac,
@@ -91,7 +93,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         _LOGGER.info(
             "Last data: %s",
-            hass.data[DOMAIN][real_entry.entry_id].stations.get(mac, None),
+            hass.data[DOMAIN][real_entry.entry_id].station,
         )
         await hass.data[DOMAIN][real_entry.entry_id].async_on_data(mac, call.data)
 
@@ -114,48 +116,42 @@ class AmbientStation:
         self._entry = entry
         self._entry_setup_complete = False
         self._hass = hass
-        self.stations: dict[str, dict] = {}
+        self.station: dict[str, Any] = {}
 
-        self.add_station(entry.data[CONF_MAC], entry.data[CONF_NAME])
-
-    def add_station(self, mac: str, name: str) -> None:
-        """Add a station to the list of stations in the integration data; currently the integration
-        only supports 1 as configured from the UI."""
-        if mac not in self.stations:
-            self.stations.setdefault(mac, {})
-            self.stations[mac][ATTR_NAME] = name
-            self.stations[mac].setdefault(ATTR_LAST_DATA, {})
-            self.stations[mac].setdefault(ATTR_KNOWN_SENSORS, [])
-            self.stations[mac][ATTR_SENSOR_UPDATE_IN_PROGRESS] = False
-            if not self._entry_setup_complete:
-                self._hass.config_entries.async_setup_platforms(self._entry, PLATFORMS)
-                self._entry_setup_complete = True
+        self.station[ATTR_MAC] = entry.data[CONF_MAC]
+        self.station[ATTR_NAME] = entry.data[CONF_NAME]
+        self.station.setdefault(ATTR_LAST_DATA, {})
+        self.station.setdefault(ATTR_KNOWN_SENSORS, [])
+        self.station[ATTR_SENSOR_UPDATE_IN_PROGRESS] = False
+        self.station[ATTR_STATIONTYPE] = ""
+        if not self._entry_setup_complete:
+            self._hass.config_entries.async_setup_platforms(self._entry, PLATFORMS)
+            self._entry_setup_complete = True
 
     async def async_on_data(self, mac: str, data: dict) -> None:
         """Processes the data from the incoming service call to update the sensors."""
         _LOGGER.info("Processing data")
         _LOGGER.info("MAC address: %s", mac)
         _LOGGER.debug("New data received: %s", data)
+        self.station[ATTR_STATIONTYPE] = data.get("stationtype", "")
         extracted_data = {
             key: value
             for key, value in data.items()
             if key in (SUPPORTED_SENSOR_TYPES + SUPPORTED_BINARY_SENSOR_TYPES)
         }
         if (
-            extracted_data == self.stations[mac][ATTR_LAST_DATA]
-            and not self.stations[mac][ATTR_SENSOR_UPDATE_IN_PROGRESS]
+            extracted_data == self.station[ATTR_LAST_DATA]
+            and not self.station[ATTR_SENSOR_UPDATE_IN_PROGRESS]
         ):
             return
-        self.stations[mac][ATTR_LAST_DATA] = extracted_data
+        self.station[ATTR_LAST_DATA] = extracted_data
         known_sensors = list(
-            set(self.stations[mac][ATTR_KNOWN_SENSORS] + list(extracted_data.keys()))
+            set(self.station[ATTR_KNOWN_SENSORS] + list(extracted_data.keys()))
         )
-        _LOGGER.info(
-            "Previously known sensors: %s", self.stations[mac][ATTR_KNOWN_SENSORS]
-        )
-        _LOGGER.info("Now known sensors: %s", known_sensors)
-        if known_sensors != self.stations[mac][ATTR_KNOWN_SENSORS]:
-            self.stations[mac][ATTR_KNOWN_SENSORS] = known_sensors
+        _LOGGER.debug("Previously known sensors: %s", self.station[ATTR_KNOWN_SENSORS])
+        _LOGGER.debug("Now known sensors: %s", known_sensors)
+        if known_sensors != self.station[ATTR_KNOWN_SENSORS]:
+            self.station[ATTR_KNOWN_SENSORS] = known_sensors
             await self._hass.config_entries.async_unload_platforms(
                 self._entry, PLATFORMS
             )
@@ -173,22 +169,21 @@ class AmbientWeatherEntity(Entity):
     def __init__(
         self,
         ambient: AmbientStation,
-        mac_address: str,
-        station_name: str,
         description: EntityDescription,
     ) -> None:
         """Initialize the entity."""
         self._ambient = ambient
 
         self._attr_device_info = DeviceInfo(
-            identifiers={(DOMAIN, mac_address)},
+            identifiers={(DOMAIN, ambient.station[ATTR_MAC])},
             manufacturer="Ambient Weather",
-            name=station_name,
+            model="Weather Station",
+            sw_version=self._ambient.station[ATTR_STATIONTYPE],
+            name=ambient.station[ATTR_NAME],
         )
         self._attr_has_entity_name = True
         self._attr_name = f"{description.name}"
-        self._attr_unique_id = f"{mac_address}_{description.key}"
-        self._mac_address = mac_address
+        self._attr_unique_id = f"{ambient.station[ATTR_MAC]}_{description.key}"
         self._attr_available = False
         self.entity_description = description
 
@@ -198,7 +193,7 @@ class AmbientWeatherEntity(Entity):
         @callback
         def update() -> None:
             """Update the state."""
-            last_data = self._ambient.stations[self._mac_address][ATTR_LAST_DATA]
+            last_data = self._ambient.station[ATTR_LAST_DATA]
 
             if self.entity_description.key in CALCULATED_SENSOR_TYPES:
                 # if we are a calculated sensor type, report available only if all our dependencies
@@ -217,7 +212,9 @@ class AmbientWeatherEntity(Entity):
 
         self.async_on_remove(
             async_dispatcher_connect(
-                self.hass, f"{DOMAIN}_data_update_{self._mac_address}", update
+                self.hass,
+                f"{DOMAIN}_data_update_{self._ambient.station[ATTR_MAC]}",
+                update,
             )
         )
 

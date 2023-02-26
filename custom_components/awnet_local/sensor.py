@@ -8,7 +8,6 @@ from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.const import ATTR_NAME
 
 from . import AmbientWeatherEntity
 from .const import (
@@ -35,10 +34,9 @@ async def async_setup_entry(
 
     async_add_entities(
         [
-            AmbientWeatherSensor(ambient, mac_address, station[ATTR_NAME], description)
-            for mac_address, station in ambient.stations.items()
+            AmbientWeatherSensor(ambient, description)
             for description in SENSOR_DESCRIPTIONS
-            if description.key in station[ATTR_KNOWN_SENSORS]
+            if description.key in ambient.station[ATTR_KNOWN_SENSORS]
         ]
     )
 
@@ -49,7 +47,7 @@ class AmbientWeatherSensor(AmbientWeatherEntity, SensorEntity):
     @callback
     def update_from_latest_data(self) -> None:
         """Fetch new state data for the sensor."""
-        station_data = self._ambient.stations[self._mac_address][ATTR_LAST_DATA]
+        station_data = self._ambient.station[ATTR_LAST_DATA]
         raw = station_data.get(self.entity_description.key)
 
         # calculation of sensor values
