@@ -163,7 +163,7 @@ class AmbientStation:
         _LOGGER.info("Processing data")
         _LOGGER.info("MAC address: %s", mac)
         _LOGGER.debug("New data received: %s", data)
-        self.station[ATTR_STATIONTYPE] = data.get("stationtype", "")
+        self.station[ATTR_STATIONTYPE] = data.get(ATTR_STATIONTYPE, "")
         extracted_data = {
             key: value
             for key, value in data.items()
