@@ -106,7 +106,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await ambient.async_load()
 
     if not ambient._entry_setup_complete:
-        hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+        hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
         ambient._entry_setup_complete = True
 
     return True
