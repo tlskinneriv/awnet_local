@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning].
 ### Added
 
 - Service descriptor with fields to make hassfest happy
+- Documentation about the service
 
 ### Changed
 
