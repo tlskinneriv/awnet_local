@@ -105,9 +105,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     await ambient.async_load()
 
-    if not ambient._entry_setup_complete:
-        hass.config_entries.async_setup_platforms(entry, PLATFORMS)
-        ambient._entry_setup_complete = True
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
 
@@ -126,7 +124,6 @@ class AmbientStation:
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Initialize."""
         self._entry = entry
-        self._entry_setup_complete = False
         self._hass = hass
         self.station: dict[str, Any] = {}
 

@@ -1,4 +1,18 @@
 update:
   name: Update Weather Information
   description: Updates the weather information from a local push
-  fields: []
+  fields:
+    PASSKEY:
+      name: PASSKEY
+      description: The MAC address for the device, without any punctuation
+      required: true
+      example: deadbeefface
+      selector:
+        text:
+    stationtype:
+      name: Station Type
+      description: The firmware version for the device
+      required: false
+      example: AMBWeatherV4.3.4
+      selector:
+        text:

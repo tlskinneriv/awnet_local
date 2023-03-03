@@ -18,3 +18,41 @@ Configuration is performed via the Home Assistant user interface. You will need 
 - MAC: the MAC address for the device
 
 Once configured, setup the accompanying add-on [AWNET](https://github.com/tlskinneriv/hassio-addons/tree/master/awnet) (see the [docs](https://github.com/tlskinneriv/hassio-addons/blob/master/awnet/DOCS.md) for direct instructions).
+
+## Service
+
+This integration provides a service that can be called (`awnet_local.update`) to update the values for
+the sensors. The service requires at least the MAC address of the device to be entered into the
+`PASSKEY` field. An example of a service call is below:
+
+```yaml
+service: awnet_local.update
+data:
+  stationtype: AMBWeatherV4.3.4
+  PASSKEY: "123456123456"
+  dateutc: "2021-12-30 16:08:46"
+  humidityin: "59"
+  baromrelin: "30.000"
+  baromabsin: "29.929"
+  tempf: "89.0"
+  battout: "1"
+  humidity: "40"
+  winddir: "245"
+  windspeedmph: "3.0"
+  windgustmph: "0.0"
+  maxdailygust: "8.1"
+  hourlyrainin: "0.00"
+  eventrainin: "0.000"
+  dailyrainin: "0.000"
+  weeklyrainin: "0.039"
+  monthlyrainin: "0.039"
+  totalrainin: "0.039"
+  solarradiation: "135.4"
+  uv: "1"
+  batt_co2: "1"
+  tempinf: "86.5"
+```
+
+Currently, the only fields exposed by the GUI are the `PASSKEY` and `stationtype` fields. This
+service is called by the accompanying AWNET add-on, but can also be called separately via the HA API
+or other methods in the case that the add-on is not used.
