@@ -1,0 +1,19 @@
+{
+  "title": "Ambient Weather Local",
+  "config": {
+    "abort": {
+      "already_configured": "Este endereço mac já se encontra configurado. Apague a configuração anterior e volte adicionar."
+    },
+    "error": {
+      "station_mac_regex_error": "Este formado de endereço MAC não é aceite."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "station_mac": "Endreço MAC",
+          "station_name": "Nome da estação"
+        }
+      }
+    }
+  }
+}
