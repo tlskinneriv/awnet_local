@@ -5,8 +5,10 @@ the calculated sensors call the "calculate" method, which then determines which 
 perform based on the sensor type.
 """
 
-from datetime import datetime, timezone
-import math
+from datetime import datetime, timezone, timedelta
+import logging, math
+
+from .const import ATTR_LAST_DATA, ATTR_LIGHTNING_DATA
 
 from .const_sensor import (
     TYPE_FEELSLIKE,
@@ -23,7 +25,12 @@ from .const_sensor import (
     TYPE_DEWPOINT_IN,
     TYPE_TEMPINF,
     TYPE_HUMIDITYIN,
+    TYPE_LIGHTNING_PER_HOUR,
+    TYPE_LIGHTNING_PER_DAY,
+    TYPE_DATEUTC,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class AmbientSensorCalculations:
@@ -32,7 +39,7 @@ class AmbientSensorCalculations:
     """
 
     @staticmethod
-    def calculate(entity_key: str, station_values: dict) -> object:
+    def calculate(entity_key: str, station_data: dict[str, object]) -> object:
         """Calls the correct calculation function and returns the data for it
 
         Args:
@@ -42,6 +49,8 @@ class AmbientSensorCalculations:
         Returns:
             any: calculated value for the field
         """
+        station_values = station_data[ATTR_LAST_DATA]
+
         if entity_key == TYPE_SOLARRADIATION_LX:
             return AmbientSensorCalculations.solar_rad_wm2_to_lux(
                 float(station_values[TYPE_SOLARRADIATION])
@@ -70,6 +79,12 @@ class AmbientSensorCalculations:
             return AmbientSensorCalculations.dew_point(
                 float(station_values.get(TYPE_TEMPINF)),
                 float(station_values.get(TYPE_HUMIDITYIN)),
+            )
+        if entity_key == TYPE_LIGHTNING_PER_HOUR:
+            return AmbientSensorCalculations.lightning_hour(
+                str(station_values.get(TYPE_DATEUTC)),
+                int(station_values.get(TYPE_LIGHTNING_PER_DAY)),
+                station_data[ATTR_LIGHTNING_DATA],
             )
         raise NotImplementedError(f"Calculation for {entity_key} is not implemented")
 
@@ -149,6 +164,71 @@ class AmbientSensorCalculations:
         return tempf
 
     @staticmethod
+    def lightning_hour(
+        lightning_time: str,
+        lightning_current_count: int,
+        lightning_data: dict[float, int],
+    ) -> int:
+        """Calculates lighting strikes in the last hour based on lightning_data collected in the
+        last hour
+
+        Args:
+            lightning_time (str): timestamp of the data coming in
+            lightning_current_count (int): number of lightning strikes
+            lightning_data (dict[float, int]): dictionary of timestamps with strike counts
+
+        Returns:
+            int: number of lightning strikes that have happened in the last hour
+        """
+        lightning_datetime = AmbientSensorConversions.mysql_timestamp_to_datetime(
+            lightning_time
+        )
+        lightning_data[lightning_datetime.timestamp()] = lightning_current_count
+
+        # find the time closest to an hour ago to get the count of lightning strikes from
+        lightning_data_times = list(lightning_data.keys())
+        search_datetime = lightning_datetime - timedelta(hours=1)
+        lightning_data_closest_times = {
+            abs(search_datetime.timestamp() - test_datetime): datetime.fromtimestamp(
+                test_datetime
+            )
+            for test_datetime in lightning_data_times
+        }
+        lightning_data_closest_time = lightning_data_closest_times[
+            min(lightning_data_closest_times.keys())
+        ]
+        _LOGGER.debug(
+            "Closest time to %s determined to be %s",
+            search_datetime,
+            lightning_data_closest_time,
+        )
+
+        # calculate the value of the number of strikes that happened in the last hour
+        lightning_previous_count = lightning_data[
+            lightning_data_closest_time.timestamp()
+        ]
+        if lightning_previous_count > lightning_current_count:
+            _LOGGER.debug(
+                "Previous lightning value is greater than current value, \
+                we must have rolled in the last hour."
+            )
+            lightning_current_count = lightning_current_count + max(
+                lightning_data.values()
+            )
+        lightning_past_hour = lightning_current_count - lightning_previous_count
+
+        # cleanup the old entries in the lightning_data dict
+        for date in [
+            timestamp
+            for timestamp in lightning_data.keys()
+            if timestamp < search_datetime.timestamp()
+        ]:
+            _LOGGER.debug("Removing old entry for %s", date)
+            del lightning_data[date]
+
+        return lightning_past_hour
+
+    @staticmethod
     def heat_index(tempf: float, rel_humid_percent: float) -> float:
         """Calculates the heat index. Above 68 F calls for heat index calc, otherwise return the
         temperature passed.
@@ -184,16 +264,16 @@ class AmbientSensorCalculations:
 
     @staticmethod
     def dew_point(tempf: float, rel_humid_percent: float) -> float:
-        """Calculates the dew point from the temperature in Farenheit and relative humidity using
+        """Calculates the dew point from the temperature in Fahrenheit and relative humidity using
         the Arden Buck equation mentioned here:
         https://ambientweather.com/faqs/question/view/id/1869/
 
         Args:
-            tempf (float): temperature in Farenheit
+            tempf (float): temperature in Fahrenheit
             rel_humid_percent (float): relative humidity percentage
 
         Returns:
-            float: dew point in Farenheit
+            float: dew point in Fahrenheit
         """
         tempc = (tempf - 32) * 5 / 9
         const_b = 18.678
@@ -227,8 +307,22 @@ class AmbientSensorConversions:
         """
         if entity_key == TYPE_LIGHTNING_TIME:
             return AmbientSensorConversions.epoch_to_datetime(int(value))
+        if entity_key == TYPE_DATEUTC:
+            return AmbientSensorConversions.mysql_timestamp_to_datetime(str(value))
         raise NotImplementedError(f"Conversion for {entity_key} is not implemented")
 
     @staticmethod
     def epoch_to_datetime(epoch: int) -> str:
         return datetime.fromtimestamp(epoch, timezone.utc)
+
+    @staticmethod
+    def mysql_timestamp_to_datetime(mysql_timestamp: str) -> datetime:
+        try:
+            return datetime.strptime(mysql_timestamp, "%Y-%m-%d+%H:%M:%S").replace(
+                tzinfo=timezone.utc
+            )
+        except Exception as e:
+            _LOGGER.error(
+                'Failed to convert timestamp "%s" to datetime: %s', mysql_timestamp, e
+            )
+            return None

@@ -30,6 +30,7 @@ from .const import (
     CONF_NAME,
     DOMAIN,
     MAC_REGEX,
+    ATTR_LIGHTNING_DATA,
 )
 
 from .const_binary_sensor import (
@@ -131,6 +132,7 @@ class AmbientStation:
         self.station[ATTR_NAME] = entry.data[CONF_NAME]
         self.station.setdefault(ATTR_LAST_DATA, {})
         self.station.setdefault(ATTR_KNOWN_SENSORS, [])
+        self.station.setdefault(ATTR_LIGHTNING_DATA, {})
         self.station[ATTR_SENSOR_UPDATE_IN_PROGRESS] = False
         self.station[ATTR_STATIONTYPE] = ""
         self._storage_key = f"{STORAGE_KEY}_{self.station[ATTR_MAC]}"
@@ -144,14 +146,23 @@ class AmbientStation:
 
     async def async_load(self) -> None:
         """Load data for station from datastore"""
-        _LOGGER.info("Loading data for known sensors")
+        _LOGGER.info("Loading data for integration")
         if (data := await self._store.async_load()) is not None:
             _LOGGER.info("Data being restored: %s", data)
-            self.station[ATTR_KNOWN_SENSORS] = data
+            # handle old style data if that's what we have saved
+            if isinstance(data, list):
+                self.station[ATTR_KNOWN_SENSORS] = data
+                self.station[ATTR_LIGHTNING_DATA] = {}
+            elif isinstance(data, dict):
+                self.station[ATTR_KNOWN_SENSORS] = data.get(ATTR_KNOWN_SENSORS, None)
+                self.station[ATTR_LIGHTNING_DATA] = data.get(ATTR_LIGHTNING_DATA, None)
+            else:
+                self.station[ATTR_KNOWN_SENSORS] = {}
+                self.station[ATTR_LIGHTNING_DATA] = {}
 
     async def async_unload(self) -> None:
         """Remove all data for the station from the datastore"""
-        _LOGGER.info("Removing data for known sensors")
+        _LOGGER.info("Removing all stored data")
         await self._store.async_remove()
 
     async def async_on_data(self, mac: str, data: dict) -> None:
@@ -198,7 +209,12 @@ class AmbientStation:
             )
 
         # Store the data off
-        await self._store.async_save(self.station[ATTR_KNOWN_SENSORS])
+        await self._store.async_save(
+            {
+                ATTR_KNOWN_SENSORS: self.station[ATTR_KNOWN_SENSORS],
+                ATTR_LIGHTNING_DATA: self.station[ATTR_LIGHTNING_DATA],
+            }
+        )
         async_dispatcher_send(self._hass, self.update_event_handle)
 
 

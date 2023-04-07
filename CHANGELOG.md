@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.1.0] - 2023-04-06
+
+### Added
+
+- Calculation for `lightning_hour` with data backup
+- `dateutc` as a diagnostic sensor; updates with the timestamp from the station data
+- Added `pt-PT` translation (thanks @ViPeR5000!)
+
+### Fixed
+
+- Typos in docstrings
+
 ## [1.0.1] - 2023-03-02
 
 ### Added
