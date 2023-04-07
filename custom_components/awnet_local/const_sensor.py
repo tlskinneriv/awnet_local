@@ -25,6 +25,8 @@ from homeassistant.const import (
     UnitOfVolumetricFlux,
 )
 
+from homeassistant.helpers.entity import EntityCategory
+
 # Sensor Types
 TYPE_24HOURRAININ = "24hourrainin"
 TYPE_AQI_PM10_IN_24H_AQIN = "aqi_pm10_in_24h_aqin"
@@ -41,6 +43,7 @@ TYPE_CO2 = "co2"
 TYPE_CO2_IN = "co2_in"
 TYPE_CO2_IN_24H = "co2_in_24h"
 TYPE_DAILYRAININ = "dailyrainin"
+TYPE_DATEUTC = "dateutc"
 TYPE_DEWPOINT = "dewPoint"
 TYPE_DEWPOINT_IN = "dewPointin"
 TYPE_ETOS = "etos"
@@ -156,6 +159,7 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_CO2_IN,
     TYPE_CO2,
     TYPE_DAILYRAININ,
+    TYPE_DATEUTC,
     TYPE_DEWPOINT_IN,
     TYPE_DEWPOINT,
     TYPE_ETOS,
@@ -265,10 +269,11 @@ CALCULATED_SENSOR_TYPES = {
     TYPE_SOLARRADIATION_LX: [TYPE_SOLARRADIATION],
     TYPE_FEELSLIKE_IN: [TYPE_TEMPINF, TYPE_HUMIDITYIN],
     TYPE_DEWPOINT_IN: [TYPE_TEMPINF, TYPE_HUMIDITYIN],
+    TYPE_LIGHTNING_PER_HOUR: [TYPE_LIGHTNING_PER_DAY, TYPE_DATEUTC],
 }
 
 # Each sensor listed here is converted server-side from the native unit to the unit that HA supports
-CONVERTED_SENSOR_TYPES = [TYPE_LIGHTNING_TIME]
+CONVERTED_SENSOR_TYPES = [TYPE_LIGHTNING_TIME, TYPE_DATEUTC]
 
 # Each sensor listed here should be restored on a restart of HA since it is a timestamp type sensor
 RESTORE_SENSOR_TYPES = [TYPE_LIGHTNING_TIME, TYPE_LASTRAIN]
@@ -370,6 +375,12 @@ SENSOR_DESCRIPTIONS = (
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         device_class=SensorDeviceClass.PRECIPITATION,
         state_class=SensorStateClass.TOTAL_INCREASING,
+    ),
+    SensorEntityDescription(
+        key=TYPE_DATEUTC,
+        name="Last Data Date",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        entity_category=EntityCategory.DIAGNOSTIC,
     ),
     SensorEntityDescription(
         key=TYPE_DEWPOINT,
@@ -597,14 +608,14 @@ SENSOR_DESCRIPTIONS = (
     ),
     SensorEntityDescription(
         key=TYPE_LIGHTNING_PER_DAY,
-        name="Lightning Strikes Per Day",
+        name="Daily Lightning Strikes",
         icon="mdi:lightning-bolt",
         native_unit_of_measurement="strikes",
         state_class=SensorStateClass.TOTAL,
     ),
     SensorEntityDescription(
         key=TYPE_LIGHTNING_PER_HOUR,
-        name="Lightning Strikes Per Hour",
+        name="Lightning Strikes Last Hour",
         icon="mdi:lightning-bolt",
         native_unit_of_measurement="strikes",
         state_class=SensorStateClass.TOTAL,
