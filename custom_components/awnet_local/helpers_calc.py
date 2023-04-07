@@ -318,7 +318,7 @@ class AmbientSensorConversions:
     @staticmethod
     def mysql_timestamp_to_datetime(mysql_timestamp: str) -> datetime:
         try:
-            return datetime.strptime(mysql_timestamp, "%Y-%m-%d+%H:%M:%S").replace(
+            return datetime.strptime(mysql_timestamp, "%Y-%m-%d %H:%M:%S").replace(
                 tzinfo=timezone.utc
             )
         except Exception as e:
