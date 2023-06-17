@@ -76,9 +76,13 @@ class AmbientWeatherSensor(AmbientWeatherEntity, RestoreSensor):
                 for x in CALCULATED_SENSOR_TYPES[self.entity_description.key]
             ):
                 # calculation of sensor values
-                raw = AmbientSensorCalculations.calculate(
+                value = AmbientSensorCalculations.calculate(
                     self.entity_description.key, self._ambient.station
                 )
+                if value is not None:
+                    raw = value
+                else:
+                    raw = self._attr_native_value
             else:
                 raw = None
 
