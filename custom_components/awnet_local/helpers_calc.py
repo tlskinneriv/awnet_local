@@ -315,11 +315,27 @@ class AmbientSensorConversions:
         raise NotImplementedError(f"Conversion for {entity_key} is not implemented")
 
     @staticmethod
-    def epoch_to_datetime(epoch: int) -> str:
+    def epoch_to_datetime(epoch: int) -> datetime:
+        """Converts epoch time to a datetime object in UTC
+
+        Args:
+            epoch (int): epoch time
+
+        Returns:
+            datetime: datetime object representing the epoch time in UTC
+        """
         return datetime.fromtimestamp(epoch, timezone.utc)
 
     @staticmethod
     def mysql_timestamp_to_datetime(mysql_timestamp: str) -> datetime:
+        """Converts a MySQL timestamp string into a datetime object in UTC
+
+        Args:
+            mysql_timestamp (str): MySQL timestamp string
+
+        Returns:
+            datetime: datetime object representing the MySQL timestamp string in UTC
+        """
         try:
             return datetime.strptime(mysql_timestamp, "%Y-%m-%d %H:%M:%S").replace(
                 tzinfo=timezone.utc
