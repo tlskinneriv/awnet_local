@@ -4,7 +4,18 @@
 
 ## Overview
 
-You can use this integration to take advantage of the new "Custom Server" feature in AWNET available in Firmware [4.2.8](https://ambientweather.com/support) on the WS-2902A, WS-2902B, WS-2902C, WS-2000 And WS-5000. I have tested this using my WS-2902C. It receives service calls from the [AWNET](https://github.com/tlskinneriv/hassio-addons/tree/master/awnet) add-on and updates entities associated with the WS device. The implementation of this integration is based largely on the built-in Ambient Weather Station component already available in Home Assistant.
+You can use this integration to take advantage of the new "Custom Server" feature in AWNET available in Firmware [4.2.8](https://ambientweather.com/support). It receives service calls from the [AWNET](https://github.com/tlskinneriv/hassio-addons/tree/master/awnet) add-on and updates entities associated with the WS device. The implementation of this integration is based largely on the built-in Ambient Weather Station component already available in Home Assistant.
+
+## Known Working Devices
+
+The following list of devices are known to work with this integration. This list may not be complete (please submit an issue if your device isn't listed and is working with the integration). The integration is currently tested using a WS-2902C.
+
+- WS-2902A
+- WS-2902B
+- WS-2902C
+- WS-2902D
+- WS-2000
+- WS-5000
 
 ## Installation
 
