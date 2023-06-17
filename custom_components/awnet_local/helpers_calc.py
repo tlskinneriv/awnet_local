@@ -57,7 +57,8 @@ class AmbientSensorCalculations:
             )
         if entity_key == TYPE_LASTRAIN:
             return AmbientSensorCalculations.last_rain(
-                float(station_values.get(TYPE_HOURLYRAININ))
+                str(station_values.get(TYPE_DATEUTC)),
+                float(station_values.get(TYPE_HOURLYRAININ)),
             )
         if entity_key == TYPE_FEELSLIKE:
             return AmbientSensorCalculations.feels_like(
@@ -102,7 +103,7 @@ class AmbientSensorCalculations:
         return float(round(solar_rad_wm2 * 126.7, 0))
 
     @staticmethod
-    def last_rain(hourly_rain_in: float) -> any:
+    def last_rain(lightning_time: str, hourly_rain_in: float) -> any:
         """Calculates the last rain timestamp from the last time that houlry rain had a value
         greater than 0 per https://github.com/ambient-weather/api-docs/wiki/Device-Data-Specs
 
@@ -113,8 +114,10 @@ class AmbientSensorCalculations:
         Returns:
             any: timestamp if there is data to report; None if it's not raining
         """
+        print("we are calculating last rain")
+        print(hourly_rain_in)
         if hourly_rain_in > 0:
-            return datetime.now(timezone.utc)
+            return AmbientSensorConversions.mysql_timestamp_to_datetime(lightning_time)
         return None
 
     @staticmethod
@@ -167,7 +170,7 @@ class AmbientSensorCalculations:
     def lightning_hour(
         lightning_time: str,
         lightning_current_count: int,
-        lightning_data: dict[float, int],
+        lightning_data: dict[str, int],
     ) -> int:
         """Calculates lighting strikes in the last hour based on lightning_data collected in the
         last hour
@@ -183,15 +186,15 @@ class AmbientSensorCalculations:
         lightning_datetime = AmbientSensorConversions.mysql_timestamp_to_datetime(
             lightning_time
         )
-        lightning_data[lightning_datetime.timestamp()] = lightning_current_count
+        lightning_data[str(lightning_datetime.timestamp())] = lightning_current_count
 
         # find the time closest to an hour ago to get the count of lightning strikes from
         lightning_data_times = list(lightning_data.keys())
         search_datetime = lightning_datetime - timedelta(hours=1)
         lightning_data_closest_times = {
-            abs(search_datetime.timestamp() - test_datetime): datetime.fromtimestamp(
-                test_datetime
-            )
+            abs(
+                search_datetime.timestamp() - float(test_datetime)
+            ): datetime.fromtimestamp(float(test_datetime))
             for test_datetime in lightning_data_times
         }
         lightning_data_closest_time = lightning_data_closest_times[
@@ -205,7 +208,7 @@ class AmbientSensorCalculations:
 
         # calculate the value of the number of strikes that happened in the last hour
         lightning_previous_count = lightning_data[
-            lightning_data_closest_time.timestamp()
+            str(lightning_data_closest_time.timestamp())
         ]
         if lightning_previous_count > lightning_current_count:
             _LOGGER.debug(
@@ -221,7 +224,7 @@ class AmbientSensorCalculations:
         for date in [
             timestamp
             for timestamp in lightning_data.keys()
-            if timestamp < search_datetime.timestamp()
+            if float(timestamp) < search_datetime.timestamp()
         ]:
             _LOGGER.debug("Removing old entry for %s", date)
             del lightning_data[date]
@@ -312,17 +315,35 @@ class AmbientSensorConversions:
         raise NotImplementedError(f"Conversion for {entity_key} is not implemented")
 
     @staticmethod
-    def epoch_to_datetime(epoch: int) -> str:
+    def epoch_to_datetime(epoch: int) -> datetime:
+        """Converts epoch time to a datetime object in UTC
+
+        Args:
+            epoch (int): epoch time
+
+        Returns:
+            datetime: datetime object representing the epoch time in UTC
+        """
         return datetime.fromtimestamp(epoch, timezone.utc)
 
     @staticmethod
     def mysql_timestamp_to_datetime(mysql_timestamp: str) -> datetime:
+        """Converts a MySQL timestamp string into a datetime object in UTC
+
+        Args:
+            mysql_timestamp (str): MySQL timestamp string
+
+        Returns:
+            datetime: datetime object representing the MySQL timestamp string in UTC
+        """
         try:
             return datetime.strptime(mysql_timestamp, "%Y-%m-%d %H:%M:%S").replace(
                 tzinfo=timezone.utc
             )
-        except Exception as e:
+        except ValueError as error:
             _LOGGER.error(
-                'Failed to convert timestamp "%s" to datetime: %s', mysql_timestamp, e
+                'Failed to convert timestamp "%s" to datetime: %s',
+                mysql_timestamp,
+                error,
             )
-            return None
+            return datetime.fromtimestamp(0, timezone.utc)

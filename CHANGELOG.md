@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.1.2] - 2023-06-16
+
+### Fixed
+
+- Storage key for data to valid Windows file path, migration on first run, resolves
+  [#26](https://github.com/tlskinneriv/awnet_local/issues/26)
+- Last Rain sensor now behaving correctly, was previously updating to "Unknown" when it had no data,
+  resolves [#28](https://github.com/tlskinneriv/awnet_local/issues/28)
+- Keys for lightning data storage are converted to strings by the storage provider, perform
+  conversions when data is accessed, resolves
+  [#29](https://github.com/tlskinneriv/awnet_local/issues/29)
+
 ## [1.1.1] - 2023-04-06
 
 ### Fixed
