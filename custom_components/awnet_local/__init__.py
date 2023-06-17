@@ -135,7 +135,9 @@ class AmbientStation:
         self.station.setdefault(ATTR_LIGHTNING_DATA, {})
         self.station[ATTR_SENSOR_UPDATE_IN_PROGRESS] = False
         self.station[ATTR_STATIONTYPE] = ""
-        self._storage_key = f"{STORAGE_KEY}_{self.station[ATTR_MAC]}"
+        self._old_storage_key = f"{STORAGE_KEY}_{self.station[ATTR_MAC]}"
+        self._storage_key = f"{STORAGE_KEY}_{self.station[ATTR_MAC].replace(':','')}"
+        self._old_store: Store = Store(hass, STORAGE_VERSION, self._old_storage_key)
         self._store: Store = Store(hass, STORAGE_VERSION, self._storage_key)
         self._update_event_handle = f"{DOMAIN}_data_update_{self.station[ATTR_MAC]}"
 
@@ -147,6 +149,26 @@ class AmbientStation:
     async def async_load(self) -> None:
         """Load data for station from datastore"""
         _LOGGER.info("Loading data for integration")
+        if (data := await self._old_store.async_load()) is not None:
+            _LOGGER.info("Data being migrated to new storage key: %s", data)
+            if isinstance(data, list):
+                self.station[ATTR_KNOWN_SENSORS] = data
+                self.station[ATTR_LIGHTNING_DATA] = {}
+            elif isinstance(data, dict):
+                self.station[ATTR_KNOWN_SENSORS] = data.get(ATTR_KNOWN_SENSORS, None)
+                self.station[ATTR_LIGHTNING_DATA] = data.get(ATTR_LIGHTNING_DATA, None)
+            else:
+                self.station[ATTR_KNOWN_SENSORS] = {}
+                self.station[ATTR_LIGHTNING_DATA] = {}
+            _LOGGER.info("Data being saved into new storage key")
+            await self._store.async_save(
+                {
+                    ATTR_KNOWN_SENSORS: self.station[ATTR_KNOWN_SENSORS],
+                    ATTR_LIGHTNING_DATA: self.station[ATTR_LIGHTNING_DATA],
+                }
+            )
+            _LOGGER.info("Old storage key being removed")
+            await self._old_store.async_remove()
         if (data := await self._store.async_load()) is not None:
             _LOGGER.info("Data being restored: %s", data)
             # handle old style data if that's what we have saved
