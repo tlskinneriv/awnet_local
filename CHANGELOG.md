@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [Unreleased] - 2023-07-13
+
+### Fixed
+
+- Lightning Strike Distance fixed to be `distance` device class
+
 ## [1.1.2] - 2023-06-16
 
 ### Fixed
