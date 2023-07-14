@@ -5,13 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
-## [Unreleased] - 2023-07-13
+## [1.1.3] - 2023-07-13
 
 ### Fixed
 
 - Lightning Strike Distance fixed to be `distance` device class
 - Device class added for evapotranspiration and GDD sensors
 - Housekeeping: updated devcontainer configuation for Python 3.11
+- The following sensors were previously missing for the AQIN sensor and have been added:
+  - AQI PM2.5 (AQIN)
+  - AQI PM2.5 24h Avg (AQIN)
+  - CO2 Indoor (AQIN)
+  - CO2 Indoor 24h Avg (AQIN)
+  - PM Indoor Humidity (AQIN)
+  - PM Indoor Temp (AQIN)
 
 ## [1.1.2] - 2023-06-16
 
