@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning].
 ### Fixed
 
 - Lightning Strike Distance fixed to be `distance` device class
+- Housekeeping: updated devcontainer configuation for Python 3.11
 
 ## [1.1.2] - 2023-06-16
 
