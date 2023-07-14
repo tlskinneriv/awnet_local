@@ -54,13 +54,13 @@ RUN ./setup.sh
 
 # WORKDIR /workspaces
 
-# # Install Python dependencies from requirements
-# COPY requirements.txt ./
+# Install Python dependencies from requirements
+COPY .devcontainer/requirements.txt ./
 # COPY homeassistant/package_constraints.txt homeassistant/package_constraints.txt
-# RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 # COPY requirements_test.txt requirements_test_pre_commit.txt ./
 # RUN pip3 install -r requirements_test.txt
-# RUN rm -rf requirements.txt requirements_test.txt requirements_test_pre_commit.txt homeassistant/
+RUN rm -rf requirements.txt requirements_test.txt requirements_test_pre_commit.txt homeassistant/
 
 # Set the default shell to bash instead of sh
 ENV SHELL /bin/bash

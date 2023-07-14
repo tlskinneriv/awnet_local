@@ -401,6 +401,7 @@ SENSOR_DESCRIPTIONS = (
         name="Evapotranspiration Short",
         icon="mdi:waves-arrow-up",
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_DAY,
+        device_class=SensorDeviceClass.PRECIPITATION_INTENSITY,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -408,6 +409,7 @@ SENSOR_DESCRIPTIONS = (
         name="Evapotranspiration Tall",
         icon="mdi:waves-arrow-up",
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_DAY,
+        device_class=SensorDeviceClass.PRECIPITATION_INTENSITY,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -436,6 +438,7 @@ SENSOR_DESCRIPTIONS = (
         name="Growing Degree Days",
         icon="mdi:sprout",
         native_unit_of_measurement=UnitOfTime.DAYS,
+        device_class=SensorDeviceClass.DURATION,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
@@ -604,6 +607,7 @@ SENSOR_DESCRIPTIONS = (
         name="Lightning Strike Distance",
         icon="mdi:lightning-bolt",
         native_unit_of_measurement=UnitOfLength.KILOMETERS,
+        device_class=SensorDeviceClass.DISTANCE,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
