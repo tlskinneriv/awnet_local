@@ -35,7 +35,10 @@
         "python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
         "python.linting.pylintArgs": [
           "--init-hook",
-          "import sys; sys.path.append('/srv/homeassistant/lib/python3.10/site-packages/')"
+          "import sys; sys.path.append('/srv/homeassistant/lib/python3.11/site-packages/')"
+        ],
+        "python.autoComplete.extraPaths": [
+          "/srv/homeassistant/lib/python3.11/site-packages/"
         ]
       },
       // Add the IDs of extensions you want installed when the container is created.
