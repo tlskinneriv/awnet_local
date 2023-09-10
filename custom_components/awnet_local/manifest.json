@@ -1,7 +1,9 @@
 {
   "domain": "awnet_local",
   "name": "Ambient Weather Station - Local",
-  "codeowners": ["@tlskinneriv"],
+  "codeowners": [
+    "@tlskinneriv"
+  ],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/tlskinneriv/awnet_local",
@@ -9,5 +11,5 @@
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/tlskinneriv/awnet_local/issues",
   "requirements": [],
-  "version": "1.1.3"
+  "version": "1.2.0"
 }
