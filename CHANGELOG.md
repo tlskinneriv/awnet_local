@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning].
 
 - Calculated sensors for cardinal wind directions on winddir and windgustdir
 - BETA: added a weather entity to collect common data in one place and loosely predict the weather
-  condition outside based on data available from the sensor array.
+  condition outside based on data available from the sensor array. The weather condition part of
+  this entity is currently in testing. Please raise issues for any unexpected behavior.
 
 ## [1.1.3] - 2023-07-13
 
