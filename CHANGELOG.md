@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.2.0] - 2023-09-09
+
+### Added
+
+- Calculated sensors for cardinal wind directions on winddir and windgustdir
+- BETA: added a weather entity to collect common data in one place and loosely predict the weather
+  condition outside based on data available from the sensor array.
+
 ## [1.1.3] - 2023-07-13
 
 ### Fixed

@@ -140,9 +140,11 @@ TYPE_TOTALRAININ = "totalrainin"
 TYPE_UV = "uv"
 TYPE_WEEKLYRAININ = "weeklyrainin"
 TYPE_WINDDIR = "winddir"
+TYPE_WINDDIR_CARD = "winddir_card"
 TYPE_WINDDIR_AVG10M = "winddir_Avg10m"
 TYPE_WINDDIR_AVG2M = "winddir_Avg2m"
 TYPE_WINDGUSTDIR = "windgustdir"
+TYPE_WINDGUSTDIR_CARD = "windgustdir_card"
 TYPE_WINDGUSTMPH = "windgustmph"
 TYPE_WINDSPDMPH_AVG10M = "windspdmph_Avg10m"
 TYPE_WINDSPDMPH_AVG2M = "windspdmph_Avg2m"
@@ -264,7 +266,9 @@ SUPPORTED_SENSOR_TYPES = [
     TYPE_WINDDIR_AVG10M,
     TYPE_WINDDIR_AVG2M,
     TYPE_WINDDIR,
+    TYPE_WINDDIR_CARD,
     TYPE_WINDGUSTDIR,
+    TYPE_WINDGUSTDIR_CARD,
     TYPE_WINDGUSTMPH,
     TYPE_WINDSPDMPH_AVG10M,
     TYPE_WINDSPDMPH_AVG2M,
@@ -282,6 +286,8 @@ CALCULATED_SENSOR_TYPES = {
     TYPE_FEELSLIKE_IN: [TYPE_TEMPINF, TYPE_HUMIDITYIN],
     TYPE_DEWPOINT_IN: [TYPE_TEMPINF, TYPE_HUMIDITYIN],
     TYPE_LIGHTNING_PER_HOUR: [TYPE_LIGHTNING_PER_DAY, TYPE_DATEUTC],
+    TYPE_WINDDIR_CARD: [TYPE_WINDDIR],
+    TYPE_WINDGUSTDIR_CARD: [TYPE_WINDGUSTDIR],
 }
 
 # Each sensor listed here is converted server-side from the native unit to the unit that HA supports
@@ -1069,10 +1075,15 @@ SENSOR_DESCRIPTIONS = (
     ),
     SensorEntityDescription(
         key=TYPE_WINDDIR,
-        name="Wind Dir",
+        name="Wind Direction",
         icon="mdi:weather-windy",
         native_unit_of_measurement=DEGREE,
         state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=TYPE_WINDDIR_CARD,
+        name="Wind Direction Cardinal",
+        icon="mdi:weather-windy",
     ),
     SensorEntityDescription(
         key=TYPE_WINDDIR_AVG10M,
@@ -1090,10 +1101,15 @@ SENSOR_DESCRIPTIONS = (
     ),
     SensorEntityDescription(
         key=TYPE_WINDGUSTDIR,
-        name="Gust Dir",
+        name="Gust Direction",
         icon="mdi:weather-windy",
         native_unit_of_measurement=DEGREE,
         state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key=TYPE_WINDGUSTDIR_CARD,
+        name="Gust Direction Cardinal",
+        icon="mdi:weather-windy",
     ),
     SensorEntityDescription(
         key=TYPE_WINDGUSTMPH,

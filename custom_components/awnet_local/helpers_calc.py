@@ -28,6 +28,10 @@ from .const_sensor import (
     TYPE_LIGHTNING_PER_HOUR,
     TYPE_LIGHTNING_PER_DAY,
     TYPE_DATEUTC,
+    TYPE_WINDDIR,
+    TYPE_WINDDIR_CARD,
+    TYPE_WINDGUSTDIR,
+    TYPE_WINDGUSTDIR_CARD,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -86,6 +90,14 @@ class AmbientSensorCalculations:
                 str(station_values.get(TYPE_DATEUTC)),
                 int(station_values.get(TYPE_LIGHTNING_PER_DAY)),
                 station_data[ATTR_LIGHTNING_DATA],
+            )
+        if entity_key == TYPE_WINDDIR_CARD:
+            return AmbientSensorCalculations.degree_to_cardinal(
+                float(station_values.get(TYPE_WINDDIR))
+            )
+        if entity_key == TYPE_WINDGUSTDIR_CARD:
+            return AmbientSensorCalculations.degree_to_cardinal(
+                float(station_values.get(TYPE_WINDGUSTDIR))
             )
         raise NotImplementedError(f"Calculation for {entity_key} is not implemented")
 
@@ -290,6 +302,37 @@ class AmbientSensorCalculations:
         )
         dew_pt_c = (const_c * gamma_t_rh) / (const_b - gamma_t_rh)
         return float(round(dew_pt_c * 9 / 5 + 32, 1))
+
+    @staticmethod
+    def degree_to_cardinal(direction_degree: float) -> str:
+        """Converts a direction in degrees to its cardinal equivalent
+
+        Args:
+            direction_degree (float): Direction in degrees
+
+        Returns:
+            str: Cardinal direction
+        """
+        direction = [
+            "N",
+            "NNE",
+            "NE",
+            "ENE",
+            "E",
+            "ESE",
+            "SE",
+            "SSE",
+            "S",
+            "SSW",
+            "SW",
+            "WSW",
+            "W",
+            "WNW",
+            "NW",
+            "NNW",
+            "N",
+        ]
+        return direction[int((direction_degree + 11.25) / 22.5)]
 
 
 class AmbientSensorConversions:

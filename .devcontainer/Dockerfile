@@ -48,7 +48,7 @@ WORKDIR /srv/homeassistant
 RUN python -m venv . \
     && source bin/activate \
     && python -m pip install wheel \
-    && pip3 install homeassistant
+    && pip3 install urllib3==1.26.7 homeassistant
 
 RUN ./setup.sh
 
