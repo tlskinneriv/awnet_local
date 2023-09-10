@@ -2,11 +2,10 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "[python]": {
-    "editor.defaultFormatter": "ms-python.python"
+    "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "editor.rulers": [100],
   "rewrap.autoWrap.enabled": true,
   "rewrap.wrappingColumn": 100,
-  "python.formatting.provider": "black",
   "cSpell.words": ["awnet", "hass", "homeassistant"]
 }

@@ -44,7 +44,7 @@ from .const_sensor import (
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
+PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.WEATHER]
 STORAGE_KEY = DOMAIN + "_data"
 STORAGE_VERSION = 1
 

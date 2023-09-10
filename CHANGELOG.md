@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.2.0] - 2023-09-09
+
+### Added
+
+- The following calculated sensors have been added:
+  - Wind Direction Cardinal
+  - Gust Direction Cardinal
+- BETA: added a weather entity to collect common data in one place and loosely predict the weather
+  condition outside based on data available from the sensor array. The weather condition part of
+  this entity is currently in testing. Please raise issues for any unexpected behavior.
+
 ## [1.1.3] - 2023-07-13
 
 ### Fixed

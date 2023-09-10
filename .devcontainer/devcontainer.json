@@ -21,19 +21,8 @@
     "vscode": {
       "settings": {
         "python.defaultInterpreterPath": "/srv/homeassistant/bin/python",
-        "python.linting.enabled": true,
-        "python.linting.pylintEnabled": true,
-        "python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
-        "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
-        "python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
-        "python.formatting.provider": "black",
-        "python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
-        "python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
-        "python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
-        "python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
-        "python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
-        "python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
-        "python.linting.pylintArgs": [
+        "pylint.path": ["/usr/local/py-utils/bin/pylint"],
+        "pylint.args": [
           "--init-hook",
           "import sys; sys.path.append('/srv/homeassistant/lib/python3.11/site-packages/')"
         ],
@@ -51,7 +40,8 @@
         "esbenp.prettier-vscode",
         "GitHub.vscode-pull-request-github",
         "streetsidesoftware.code-spell-checker",
-        "ms-python.pylint"
+        "ms-python.pylint",
+        "ms-python.black-formatter"
       ]
     }
   },

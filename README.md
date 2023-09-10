@@ -30,7 +30,14 @@ Configuration is performed via the Home Assistant user interface. You will need 
 - Name: a friendly name for the device to display in Home Assistant
 - MAC: the MAC address for the device
 
-Once configured, setup the accompanying add-on [AWNET](https://github.com/tlskinneriv/hassio-addons/tree/master/awnet) (see the [docs](https://github.com/tlskinneriv/hassio-addons/blob/master/awnet/DOCS.md) for direct instructions).
+Once configured, setup the accompanying add-on
+[AWNET](https://github.com/tlskinneriv/hassio-addons/tree/master/awnet) (see the
+[docs](https://github.com/tlskinneriv/hassio-addons/blob/master/awnet/DOCS.md) for direct
+instructions).
+
+> NOTE: Entities for the device will not show up until the add-on referenced above is installed and
+> the settings are properly configured on the Ambient Weather device. Currently, the integration
+> supports only one weather station.
 
 ## Service
 
