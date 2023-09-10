@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning].
 
 ### Added
 
-- Calculated sensors for cardinal wind directions on winddir and windgustdir
+- The following calculated sensors have been added:
+  - Wind Direction Cardinal
+  - Gust Direction Cardinal
 - BETA: added a weather entity to collect common data in one place and loosely predict the weather
   condition outside based on data available from the sensor array. The weather condition part of
   this entity is currently in testing. Please raise issues for any unexpected behavior.
