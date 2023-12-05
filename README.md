@@ -10,12 +10,14 @@ You can use this integration to take advantage of the new "Custom Server" featur
 
 The following list of devices are known to work with this integration. This list may not be complete (please submit an issue if your device isn't listed and is working with the integration). The integration is currently tested using a WS-2902C.
 
+- WS-1550
 - WS-2902A
 - WS-2902B
 - WS-2902C
 - WS-2902D
 - WS-2000
 - WS-5000
+- Observer IP 2
 
 ## Installation
 
