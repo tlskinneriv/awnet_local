@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+## [1.2.1] - 2025-01-09
+
+### Fixed
+
+- Removed unnecessary development log message for
+  [#54](https://github.com/tlskinneriv/awnet_local/issues/54)
+- HOUSEKEEPING: Update devcontainer config for Python 3.13
+
 ## [1.2.0] - 2023-09-09
 
 ### Added
@@ -12,9 +20,9 @@ and this project adheres to [Semantic Versioning].
 - The following calculated sensors have been added:
   - Wind Direction Cardinal
   - Gust Direction Cardinal
-- BETA: added a weather entity to collect common data in one place and loosely predict the weather
-  condition outside based on data available from the sensor array. The weather condition part of
-  this entity is currently in testing. Please raise issues for any unexpected behavior.
+  - BETA: added a weather entity to collect common data in one place and loosely predict the weather
+    condition outside based on data available from the sensor array. The weather condition part of
+    this entity is currently in testing. Please raise issues for any unexpected behavior.
 
 ## [1.1.3] - 2023-07-13
 
