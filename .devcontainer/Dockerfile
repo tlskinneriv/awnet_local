@@ -10,28 +10,28 @@ RUN \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         # Additional library needed by some tests and accordingly by VScode Tests Discovery
         bluez \
+        ffmpeg \
         libudev-dev \
         libavformat-dev \
         libavcodec-dev \
         libavdevice-dev \
         libavutil-dev \
+        libgammu-dev \
         libswscale-dev \
         libswresample-dev \
         libavfilter-dev \
         libpcap-dev \
-        git \
-        libffi-dev \
-        libssl-dev \
-        libjpeg-dev \
-        zlib1g-dev \
-        autoconf \
-        build-essential \
-        libopenjp2-7 \
-        libtiff5 \
         libturbojpeg0 \
-        tzdata \
+        libyaml-dev \
+        libxml2 \
+        git \
+        cmake \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Add go2rtc binary
+
+COPY --from=ghcr.io/alexxit/go2rtc:latest /usr/local/bin/go2rtc /bin/go2rtc
 
 RUN mkdir /srv/homeassistant \
     && chown vscode:vscode /srv/homeassistant
@@ -48,19 +48,9 @@ WORKDIR /srv/homeassistant
 RUN python -m venv . \
     && source bin/activate \
     && python -m pip install wheel \
-    && pip3 install urllib3==1.26.7 homeassistant
+    && pip3 install homeassistant
 
 RUN ./setup.sh
-
-# WORKDIR /workspaces
-
-# Install Python dependencies from requirements
-COPY .devcontainer/requirements.txt ./
-# COPY homeassistant/package_constraints.txt homeassistant/package_constraints.txt
-RUN pip3 install -r requirements.txt
-# COPY requirements_test.txt requirements_test_pre_commit.txt ./
-# RUN pip3 install -r requirements_test.txt
-RUN rm -rf requirements.txt requirements_test.txt requirements_test_pre_commit.txt homeassistant/
 
 # Set the default shell to bash instead of sh
 ENV SHELL /bin/bash

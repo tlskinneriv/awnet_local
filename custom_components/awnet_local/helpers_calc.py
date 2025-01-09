@@ -126,8 +126,6 @@ class AmbientSensorCalculations:
         Returns:
             any: timestamp if there is data to report; None if it's not raining
         """
-        print("we are calculating last rain")
-        print(hourly_rain_in)
         if hourly_rain_in > 0:
             return AmbientSensorConversions.mysql_timestamp_to_datetime(lightning_time)
         return None
