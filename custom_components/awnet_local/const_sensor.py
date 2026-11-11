@@ -10,8 +10,6 @@ from homeassistant.components.sensor import (
 )
 
 from homeassistant.const import (
-    CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
-    CONCENTRATION_PARTS_PER_MILLION,
     DEGREE,
     LIGHT_LUX,
     PERCENTAGE,
@@ -26,6 +24,26 @@ from homeassistant.const import (
 )
 
 from homeassistant.helpers.entity import EntityCategory
+
+# Newer HA versions replaced the CONCENTRATION_* constants with UnitOfDensity and
+# UnitOfRatio. Fall back to the old constants so older HA versions still work.
+try:
+    from homeassistant.const import UnitOfDensity
+
+    UNIT_MICROGRAMS_PER_CUBIC_METER = UnitOfDensity.MICROGRAMS_PER_CUBIC_METER
+except ImportError:
+    from homeassistant.const import CONCENTRATION_MICROGRAMS_PER_CUBIC_METER
+
+    UNIT_MICROGRAMS_PER_CUBIC_METER = CONCENTRATION_MICROGRAMS_PER_CUBIC_METER
+
+try:
+    from homeassistant.const import UnitOfRatio
+
+    UNIT_PARTS_PER_MILLION = UnitOfRatio.PARTS_PER_MILLION
+except ImportError:
+    from homeassistant.const import CONCENTRATION_PARTS_PER_MILLION
+
+    UNIT_PARTS_PER_MILLION = CONCENTRATION_PARTS_PER_MILLION
 
 # Sensor Types
 TYPE_24HOURRAININ = "24hourrainin"
@@ -381,35 +399,35 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_CO2,
         name="CO2",
-        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+        native_unit_of_measurement=UNIT_PARTS_PER_MILLION,
         device_class=SensorDeviceClass.CO2,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_CO2_IN_AQIN,
         name="CO2 Indoor (AQIN)",
-        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+        native_unit_of_measurement=UNIT_PARTS_PER_MILLION,
         device_class=SensorDeviceClass.CO2,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_CO2_IN,
         name="CO2 Indoor",
-        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+        native_unit_of_measurement=UNIT_PARTS_PER_MILLION,
         device_class=SensorDeviceClass.CO2,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_CO2_IN_24H_AQIN,
         name="CO2 Indoor 24h Avg (AQIN)",
-        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+        native_unit_of_measurement=UNIT_PARTS_PER_MILLION,
         device_class=SensorDeviceClass.CO2,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_CO2_IN_24H,
         name="CO2 Indoor 24h Avg",
-        native_unit_of_measurement=CONCENTRATION_PARTS_PER_MILLION,
+        native_unit_of_measurement=UNIT_PARTS_PER_MILLION,
         device_class=SensorDeviceClass.CO2,
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -719,70 +737,70 @@ SENSOR_DESCRIPTIONS = (
     SensorEntityDescription(
         key=TYPE_PM10_IN,
         name="PM10 Indoor",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM10,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_PM10_IN_24H,
         name="PM10 Indoor 24h Avg",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM10,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_PM10_IN_AQIN,
         name="PM10 Indoor (AQIN Sensor)",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM10,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_PM10_IN_24H_AQIN,
         name="PM10 Indoor 24h Avg (AQIN Sensor)",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM10,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_24H,
         name="PM25 24h Avg",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_IN,
         name="PM25 Indoor",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_IN_24H,
         name="PM25 Indoor 24h Avg",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_IN_AQIN,
         name="PM25 Indoor (AQIN Sensor)",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_PM25_IN_24H_AQIN,
         name="PM25 Indoor 24h Avg (AQIN Sensor)",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
     ),
     SensorEntityDescription(
         key=TYPE_PM25,
         name="PM25",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
         device_class=SensorDeviceClass.PM25,
         state_class=SensorStateClass.MEASUREMENT,
     ),
